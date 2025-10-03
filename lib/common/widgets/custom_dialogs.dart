@@ -476,6 +476,17 @@ class CustomDialogs {
     );
   }
 
+  static void showErrorToast(String message, {bool isError = false}) async {
+    await toast.Fluttertoast.showToast(
+      msg: message,
+      toastLength: toast.Toast.LENGTH_LONG,
+      gravity: toast.ToastGravity.BOTTOM,
+      backgroundColor: Pallets.red ,
+      textColor: Pallets.white,
+      fontSize: 16,
+    );
+  }
+
   static void showFlushBar(BuildContext context, String message,
       {bool isError = false}) async {
     if (isError) {

@@ -48,8 +48,7 @@ class _CookDetailsState extends State<CookDetails> {
                         height: 160,
                       ),
                       Positioned(
-                        bottom: 20,
-
+                        bottom: 10,
                         left: 2,
                         right: 2,
                         child: Column(

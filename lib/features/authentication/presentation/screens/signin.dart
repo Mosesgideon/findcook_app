@@ -6,10 +6,14 @@ import 'package:find_cook/features/authentication/presentation/screens/signup.da
 import 'package:find_cook/features/dash_board/screens/base_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
+import '../../../../common/widgets/custom_dialogs.dart';
 import '../../../../common/widgets/filled_textfield.dart';
+import '../../data/repository/auth_repo_impl.dart';
+import '../auth_bloc/auth_bloc.dart';
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
 
@@ -21,6 +25,8 @@ class _SigninScreenState extends State<SigninScreen> {
   final key=GlobalKey<FormState>();
   final emailController=TextEditingController();
   final passwordController=TextEditingController();
+  final authbloc = AuthBloc(AuthRepositoryImpl());
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -60,9 +66,15 @@ class _SigninScreenState extends State<SigninScreen> {
               controller: passwordController,
               outlineColor: Color(0xfffaab65),),
               40.verticalSpace,
-              CustomButton(child: TextView(text: "Login",color: Colors.white,fontWeight: FontWeight.w700,), onPressed: (){
+              BlocConsumer<AuthBloc, AuthState>(
+  listener:_listentoAuthState,
+                bloc: authbloc,
+  builder: (context, state) {
+    return CustomButton(child: TextView(text: "Login",color: Colors.white,fontWeight: FontWeight.w700,), onPressed: (){
                 loginuser();
-              }),
+              });
+  },
+),
               20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +98,23 @@ class _SigninScreenState extends State<SigninScreen> {
 
   void loginuser() {
     if(key.currentState!.validate()){
-      Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
+      authbloc.add(LoginEvent(emailController.text.trim(), passwordController.text.trim()));
     }
   }
+  void _listentoAuthState(BuildContext context, AuthState state) {
+    if (state is AuthloadingState) {
+      CustomDialogs.showLoading(context);
+    }
+    if (state is AuthfailuireState) {
+      CustomDialogs.showToast(state.error,isError: true);
+      Navigator.pop(context);
+    }
+    if (state is AuthSuccessState) {
+      CustomDialogs.showToast("Login successful");
+      Navigator.pop(context);
+      Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
+
+    }
+  }
+
 }
