@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/image_widget.dart';
+import '../../../../core/services/share_prefs/shared_prefs_save.dart';
+import '../../../authentication/data/models/AuthSuccessResponse.dart';
 class Mybookings extends StatefulWidget {
   const Mybookings({super.key});
 
@@ -16,10 +18,26 @@ class Mybookings extends StatefulWidget {
 }
 
 class _MybookingsState extends State<Mybookings> {
+  final shared = SharedPreferencesClass();
+  AuthSuccessResponse? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await SharedPreferencesClass.getUserData();
+    setState(() {
+      user = data;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: PreferredSize(preferredSize: Size(MediaQuery.of(context).size.width, 100), child: Container(
+      appBar: PreferredSize(preferredSize: Size(MediaQuery.of(context).size.width, 100),
+          child: Container(
         padding: EdgeInsets.only(top: 20,bottom: 10,left: 10,right: 10),
         decoration: BoxDecoration(color: Color(0xfffaab65)),
         child: SafeArea(
@@ -30,7 +48,7 @@ class _MybookingsState extends State<Mybookings> {
                 children: [
                   Icon(Icons.location_on_outlined, color: Colors.green),
                   SizedBox(width: 8),
-                  TextView(text: "Lagos, Nigeria"),
+                  TextView(text: user?.location.placeName??''),
                 ],
               ),
               CircleAvatar(child: Icon(Iconsax.user))

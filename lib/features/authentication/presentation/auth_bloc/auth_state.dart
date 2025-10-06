@@ -22,10 +22,11 @@ class AuthfailuireState  extends AuthState {
   // TODO: implement props
   List<Object?> get props => [error];
 }
-class AuthSuccessState  extends AuthState {
+class AuthSuccessState extends AuthState {
+  final AuthSuccessResponse response;
 
-  AuthSuccessState();
+  AuthSuccessState(this.response);
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [response];
 }

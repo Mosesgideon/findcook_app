@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/AuthSuccessResponse.dart';
 import '../../data/models/auth_response.dart';
 import '../../domain/repository/auth_repository.dart';
 
@@ -22,11 +23,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _mapLoginEventToState(
     LoginEvent event,
     Emitter<AuthState> emit,
-  ) async {
+  ) async
+  {
     emit(AuthloadingState());
     try {
-      await repository.login(event.email, event.password);
-      emit(AuthSuccessState());
+      var response =await repository.login(event.email, event.password);
+      emit(AuthSuccessState(response));
     } catch (e) {
       emit(AuthfailuireState(e.toString()));
       rethrow;
@@ -38,10 +40,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthloadingState());
-
     try {
-     await repository.register(event.payload);
-      emit(AuthSuccessState());
+      var response = await repository.register(event.payload);
+      emit(AuthSuccessState(response));
     } catch (e) {
       emit(AuthfailuireState(e.toString()));
       rethrow;

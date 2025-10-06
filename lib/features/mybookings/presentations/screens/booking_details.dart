@@ -177,7 +177,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: CustomButton(child: TextView(text: "Book Again",color: Colors.white,fontWeight: FontWeight.w700,), onPressed: (){
-                  CustomDialogs.showBottomSheet(context, Bookbottomsheet());
+                  CustomDialogs.showBottomSheet(context, Bookbottomsheet(cookServices: [], cookSpecialMeals: [],));
                 }),
               ),
               20.verticalSpace,

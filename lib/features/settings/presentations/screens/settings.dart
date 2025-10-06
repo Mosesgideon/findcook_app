@@ -7,6 +7,8 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/image_widget.dart';
 import '../../../../common/widgets/text_view.dart';
+import '../../../../core/services/share_prefs/shared_prefs_save.dart';
+import '../../../authentication/data/models/AuthSuccessResponse.dart';
 class AppSettinggs extends StatefulWidget {
   const AppSettinggs({super.key});
 
@@ -15,6 +17,21 @@ class AppSettinggs extends StatefulWidget {
 }
 
 class _AppSettinggsState extends State<AppSettinggs> {
+  final shared = SharedPreferencesClass();
+  AuthSuccessResponse? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await SharedPreferencesClass.getUserData();
+    setState(() {
+      user = data;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -42,9 +59,9 @@ class _AppSettinggsState extends State<AppSettinggs> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextView(text: "Lisa Panchal Jani"),
+                    TextView(text: user?.fullname??''),
                     4.verticalSpace,
-                    TextView(text: "LisaPanchalJani@gmail.com",fontSize: 10,)
+                    TextView(text:  user?.email??'',fontSize: 10,)
                   ],
                 )
               ],

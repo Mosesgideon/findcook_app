@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:find_cook/common/widgets/custom_button.dart';
 import 'package:find_cook/common/widgets/image_widget.dart';
 import 'package:find_cook/common/widgets/outlined_form_field.dart';
@@ -36,7 +38,6 @@ class _SigninScreenState extends State<SigninScreen> {
           key: key,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               40.verticalSpace,
               Center(child: ImageWidget(imageUrl: "assets/png/logo.png",size: 100,)),
@@ -65,7 +66,9 @@ class _SigninScreenState extends State<SigninScreen> {
                 ]).call,
               controller: passwordController,
               outlineColor: Color(0xfffaab65),),
-              40.verticalSpace,
+              10.verticalSpace,
+              TextView(text: "Forgot Password",fontWeight: FontWeight.w500,color: Color(0xfffaab65),),
+              30.verticalSpace,
               BlocConsumer<AuthBloc, AuthState>(
   listener:_listentoAuthState,
                 bloc: authbloc,
@@ -110,6 +113,7 @@ class _SigninScreenState extends State<SigninScreen> {
       Navigator.pop(context);
     }
     if (state is AuthSuccessState) {
+      log(state.response.location.placeName??'');
       CustomDialogs.showToast("Login successful");
       Navigator.pop(context);
       Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
