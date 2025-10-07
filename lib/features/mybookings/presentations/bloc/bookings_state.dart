@@ -29,3 +29,11 @@ class BookingsCookSuccessState extends BookingsState {
   List<Object?> get props => [];
 
 }
+class MyBookingsCookSuccessState extends BookingsState {
+  List<AppBookingResponse> response;
+  MyBookingsCookSuccessState(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
+
+}

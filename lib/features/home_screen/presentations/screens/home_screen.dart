@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     CupertinoPageRoute(
                                       builder: (ctxNav) => CookDetails(response: state.response, cookName: cook[ctx].cookName, cookEmail: cook[ctx].cookEmail, cookAbout: cook[ctx].cookAbout, cookLocation:  cook[ctx].cookLocation, yearsOfExperience:  cook[ctx].yearsOfExperience, cookType:  cook[ctx].cookType, cookChargePerHr:  cook[ctx].cookChargePerHr, marriageStatus:  cook[ctx].marriageStatus, cookLanguages:  cook[ctx].cookLanguages, cookUsername:  cook[ctx].cookUsername
-                                          , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings
+                                          , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings, cookID: cook[ctx].cookID.toString(),
                                       ),
                                     ),
                                   );
@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 context,
                                                 CupertinoPageRoute(
                                                   builder: (ctxNav) => CookDetails(response: state.response, cookName: cook[ctx].cookName, cookEmail: cook[ctx].cookEmail, cookAbout: cook[ctx].cookAbout, cookLocation:  cook[ctx].cookLocation, yearsOfExperience:  cook[ctx].yearsOfExperience, cookType:  cook[ctx].cookType, cookChargePerHr:  cook[ctx].cookChargePerHr, marriageStatus:  cook[ctx].marriageStatus, cookLanguages:  cook[ctx].cookLanguages, cookUsername:  cook[ctx].cookUsername
-                                                      , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings
+                                                      , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings,cookID: cook[ctx].cookID.toString(),
                                                   ),
                                                 ),
                                               );
@@ -270,6 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       Container(
+                                        width: 1.sw,
                                         alignment: Alignment.center,
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 15,
@@ -283,20 +284,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            // TextView(
-                                            //   text: cook[ctx].cookType,
-                                            //   color: Colors.white,
-                                            //   fontSize: 12,
-                                            //   fontWeight: FontWeight.w600,
-                                            // ),
-                                            TextView(
-                                              text: "\$${cook[ctx].cookChargePerHr}/hr",
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
+                                            Expanded(
+                                              child: TextView(
+                                                text: "\$${cook[ctx].cookChargePerHr}/hr",
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -334,6 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state is CookSuccessSate) {
       Navigator.pop(context);
       print(state.response.length);
+      print(state.response.first.cookID.toString());
     }
   }
 }

@@ -14,7 +14,7 @@ import '../../data/models/cook_models.dart';
 
 class CookDetails extends StatefulWidget {
   final List<AppCookModelResponse> response;
-  final String? cookID;
+  final String cookID;
   final String cookName;
   final String cookEmail;
   final String cookAbout;
@@ -34,7 +34,30 @@ class CookDetails extends StatefulWidget {
   final List<String> cookServices;
   final List<String> cookSpecialMeals;
   final List<CookRating> ratings;
-  const CookDetails({super.key, required this.response,  this.cookID, required this.cookName, required this.cookEmail, required this.cookAbout, required this.cookLocation, required this.yearsOfExperience, required this.cookType, required this.cookChargePerHr, required this.marriageStatus, required this.cookLanguages, required this.cookUsername, required this.cookReligion, required this.cookPhone, required this.cookProfileImage, required this.cookCoverImage, required this.cookHouseAddress, required this.cookGallery, required this.cookServices, required this.cookSpecialMeals, required this.ratings});
+  const CookDetails({
+    super.key,
+    required this.response,
+    required this.cookID,
+    required this.cookName,
+    required this.cookEmail,
+    required this.cookAbout,
+    required this.cookLocation,
+    required this.yearsOfExperience,
+    required this.cookType,
+    required this.cookChargePerHr,
+    required this.marriageStatus,
+    required this.cookLanguages,
+    required this.cookUsername,
+    required this.cookReligion,
+    required this.cookPhone,
+    required this.cookProfileImage,
+    required this.cookCoverImage,
+    required this.cookHouseAddress,
+    required this.cookGallery,
+    required this.cookServices,
+    required this.cookSpecialMeals,
+    required this.ratings,
+  });
 
   @override
   State<CookDetails> createState() => _CookDetailsState();
@@ -53,7 +76,6 @@ class _CookDetailsState extends State<CookDetails> {
       ),
 
       body: SingleChildScrollView(
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -110,7 +132,8 @@ class _CookDetailsState extends State<CookDetails> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                       TextView(
-                                        text: widget.response.first.cookLocation,
+                                        text:
+                                            widget.response.first.cookLocation,
                                         fontWeight: FontWeight.w300,
                                         fontSize: 12,
                                       ),
@@ -142,7 +165,7 @@ class _CookDetailsState extends State<CookDetails> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -152,23 +175,29 @@ class _CookDetailsState extends State<CookDetails> {
                     fontWeight: FontWeight.w500,
                   ),
                   5.verticalSpace,
-                  TextView(
-                    text:
-                    widget.cookAbout,
-                    fontSize: 12,
-                  ),20.verticalSpace,
+                  TextView(text: widget.cookAbout, fontSize: 12),
+                  20.verticalSpace,
                   TextView(
                     text: "Personal Details",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   8.verticalSpace,
-                  TextView(text: "Location : ${widget.cookLocation}",fontSize: 12,),
+                  TextView(
+                    text: "Location : ${widget.cookLocation}",
+                    fontSize: 12,
+                  ),
                   4.verticalSpace,
-                  TextView(text: "Langguage : ${widget.cookLanguages}",fontSize: 12,),
+                  TextView(
+                    text: "Langguage : ${widget.cookLanguages}",
+                    fontSize: 12,
+                  ),
                   4.verticalSpace,
 
-                  TextView(text: "Religion : ${widget.cookReligion}",fontSize: 12,),
+                  TextView(
+                    text: "Religion : ${widget.cookReligion}",
+                    fontSize: 12,
+                  ),
                   20.verticalSpace,
                   TextView(
                     text: "Specialties",
@@ -177,22 +206,24 @@ class _CookDetailsState extends State<CookDetails> {
                   ),
                   10.verticalSpace,
                   Wrap(
-                    crossAxisAlignment:WrapCrossAlignment.start ,
+                    crossAxisAlignment: WrapCrossAlignment.start,
                     runAlignment: WrapAlignment.spaceAround,
                     spacing: 4,
 
                     runSpacing: 8,
-                    children: List.generate(widget.cookSpecialMeals.length, (ctx)=>Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Pallets.grey35.withOpacity(0.3))
-
+                    children: List.generate(
+                      widget.cookSpecialMeals.length,
+                      (ctx) => Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Pallets.grey35.withOpacity(0.3),
+                          ),
+                        ),
+                        child: TextView(text: widget.cookSpecialMeals[ctx]),
                       ),
-                      child: TextView(text: widget.cookSpecialMeals[ctx]),
-
-                    )),
-
+                    ),
                   ),
                   20.verticalSpace,
                   TextView(
@@ -202,21 +233,24 @@ class _CookDetailsState extends State<CookDetails> {
                   ),
                   10.verticalSpace,
                   Wrap(
-                    crossAxisAlignment:WrapCrossAlignment.start ,
+                    crossAxisAlignment: WrapCrossAlignment.start,
                     runAlignment: WrapAlignment.spaceAround,
                     spacing: 4,
 
                     runSpacing: 8,
-                    children: List.generate(widget.cookServices.length, (ctx)=>Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
+                    children: List.generate(
+                      widget.cookServices.length,
+                      (ctx) => Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Pallets.grey35.withOpacity(0.3))
+                          border: Border.all(
+                            color: Pallets.grey35.withOpacity(0.3),
+                          ),
+                        ),
+                        child: TextView(text: widget.cookServices[ctx]),
                       ),
-                      child: TextView(text: widget.cookServices[ctx]),
-
-                    )),
-
+                    ),
                   ),
                   20.verticalSpace,
                   TextView(
@@ -228,28 +262,45 @@ class _CookDetailsState extends State<CookDetails> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children:List.generate(widget.cookGallery.length, (gallery)=> Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: ImageWidget(imageUrl: widget.cookGallery[gallery],
-                          width:100,height: 100,
-                          borderRadius: BorderRadius.circular(15),),
-                      ),)),
+                      children: List.generate(
+                        widget.cookGallery.length,
+                        (gallery) => Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: ImageWidget(
+                            imageUrl: widget.cookGallery[gallery],
+                            width: 100,
+                            height: 100,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
 
-
                   20.verticalSpace,
-                  TextView(text: "Rating And Reviews",fontSize: 16,fontWeight: FontWeight.w500,),
+                  TextView(
+                    text: "Rating And Reviews",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                   4.verticalSpace,
                   Row(
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color:Colors.yellow.withOpacity(0.05),
-                            border: Border.all(color: Colors.yellow)),
-                        child: TextView(text:"${widget.ratings.length}/5",color: CupertinoColors.systemYellow,fontSize: 12,),),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.yellow.withOpacity(0.05),
+                          border: Border.all(color: Colors.yellow),
+                        ),
+                        child: TextView(
+                          text: "${widget.ratings.length}/5",
+                          color: CupertinoColors.systemYellow,
+                          fontSize: 12,
+                        ),
+                      ),
                       4.horizontalSpace,
-                      TextView(text: "(4 rating)",fontSize: 10,),
-
+                      TextView(text: "(4 rating)", fontSize: 10),
                     ],
                   ),
                   Divider(),
@@ -260,27 +311,28 @@ class _CookDetailsState extends State<CookDetails> {
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               5.verticalSpace,
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     width: 200,
-                                    child:     RatingBarIndicator(
+                                    child: RatingBarIndicator(
                                       rating: 3 ?? 0.0,
-                                      itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber),
+                                      itemBuilder:
+                                          (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
                                       itemCount: 5,
                                       itemSize: 16.0,
                                       unratedColor: Pallets.grey90,
                                     ),
                                   ),
-                                  TextView(
-                                    text: '20/12/2025',
-                                    fontSize: 11,
-                                  ),
+                                  TextView(text: '20/12/2025', fontSize: 11),
                                 ],
                               ),
                               5.verticalSpace,
@@ -290,41 +342,83 @@ class _CookDetailsState extends State<CookDetails> {
                               ),
                               5.verticalSpace,
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  TextView(text: "by Moses Gideon",
+                                  TextView(
+                                    text: "by Moses Gideon",
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black87,
                                   ),
                                   Row(
                                     children: [
-                                      Icon(Icons.verified,color: Colors.green,size: 14,),
-                                      TextView(text: "Verified User",fontSize: 10,color: Colors.green,),
+                                      Icon(
+                                        Icons.verified,
+                                        color: Colors.green,
+                                        size: 14,
+                                      ),
+                                      TextView(
+                                        text: "Verified User",
+                                        fontSize: 10,
+                                        color: Colors.green,
+                                      ),
                                     ],
-                                  )
+                                  ),
                                 ],
                               ),
-
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: TextView(text: "Note:You need to book the cook in order to contact or chat them",fontSize: 10,),
+              child: TextView(
+                text:
+                    "Note:You need to book the cook in order to contact or chat them",
+                fontSize: 10,
+              ),
             ),
             10.verticalSpace,
             Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20,bottom: 50),
-              child: CustomButton(child: TextView(text: "Book Cook",color: Colors.white,fontWeight: FontWeight.w700,), onPressed: (){
-                CustomDialogs.showBottomSheet(context, Bookbottomsheet(cookServices: widget.cookServices, cookSpecialMeals: widget.cookSpecialMeals,));
-              }),
-            )
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 50),
+              child: CustomButton(
+                child: TextView(
+                  text: "Book Cook",
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+                onPressed: () {
+                  CustomDialogs.showBottomSheet(
+                    context,
+                    Bookbottomsheet(
+                      cookServices: widget.cookServices,
+                      cookSpecialMeals: widget.cookSpecialMeals,
+                      cookId: widget.cookID.toString(),
+                      cookName: widget.cookName,
+                      cookEmail: widget.cookEmail,
+                      cookAbout: widget.cookAbout,
+                      cookLocation: widget.cookLocation,
+                      yearsOfExperience: widget.yearsOfExperience,
+                      cookType: widget.cookType,
+                      cookChargePerHr: widget.cookChargePerHr,
+                      cookmarriageStatus: widget.marriageStatus,
+                      cookLanguages: widget.cookLanguages,
+                      cookUsername: widget.cookUsername,
+                      cookReligion: widget.cookReligion,
+                      cookPhone: widget.cookPhone,
+                      cookProfileImage: widget.cookProfileImage,
+                      cookHouseAddress: widget.cookHouseAddress,
+                      cookGallery: widget.cookGallery,
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

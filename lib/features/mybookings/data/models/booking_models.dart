@@ -27,6 +27,8 @@ class AppBookingModelPayload {
     required this.cookGallery,
     required this.clientSelectedServices,
     required this.clientSelectedSpecialMeals,
+    required this.notes,
+    required this.status,
   });
 
   final String? cookId;
@@ -56,6 +58,8 @@ class AppBookingModelPayload {
   final List<String> cookGallery;
   final List<String> clientSelectedServices;
   final List<String> clientSelectedSpecialMeals;
+  final String notes;
+  final String status;
 
   AppBookingModelPayload copyWith({
     String? cookId,
@@ -85,6 +89,8 @@ class AppBookingModelPayload {
     List<String>? cookGallery,
     List<String>? clientSelectedServices,
     List<String>? clientSelectedSpecialMeals,
+    String? notes,
+    String? status,
   }) {
     return AppBookingModelPayload(
       cookId: cookId ?? this.cookId,
@@ -114,6 +120,8 @@ class AppBookingModelPayload {
       cookGallery: cookGallery ?? this.cookGallery,
       clientSelectedServices: clientSelectedServices ?? this.clientSelectedServices,
       clientSelectedSpecialMeals: clientSelectedSpecialMeals ?? this.clientSelectedSpecialMeals,
+      notes: notes ?? this.notes,
+      status: status ?? this.status,
     );
   }
 
@@ -146,6 +154,8 @@ class AppBookingModelPayload {
       cookGallery: json["cookGallery"] == null ? [] : List<String>.from(json["cookGallery"]!.map((x) => x)),
       clientSelectedServices: json["clientSelectedServices"] == null ? [] : List<String>.from(json["clientSelectedServices"]!.map((x) => x)),
       clientSelectedSpecialMeals: json["clientSelectedSpecialMeals"] == null ? [] : List<String>.from(json["clientSelectedSpecialMeals"]!.map((x) => x)),
+      notes: json["notes"],
+      status: json["status"],
     );
   }
 
@@ -177,10 +187,12 @@ class AppBookingModelPayload {
     "cookGallery": cookGallery.map((x) => x).toList(),
     "clientSelectedServices": clientSelectedServices.map((x) => x).toList(),
     "clientSelectedSpecialMeals": clientSelectedSpecialMeals.map((x) => x).toList(),
+    "notes":notes,
+    "status":status,
   };
 
   @override
   String toString(){
-    return "$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals, ";
+    return "$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals,$notes ,$status";
   }
 }
