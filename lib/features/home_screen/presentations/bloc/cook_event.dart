@@ -10,3 +10,12 @@ class GetCookEvent extends CookEvent {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+class AddCookEvent extends CookEvent {
+  AppCookPayload payload;
+  AddCookEvent(this.payload);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [payload];
+
+}

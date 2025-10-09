@@ -1,6 +1,7 @@
 import 'package:find_cook/common/widgets/circular_loader.dart';
 import 'package:find_cook/common/widgets/custom_appbar.dart';
 import 'package:find_cook/common/widgets/custom_dialogs.dart';
+import 'package:find_cook/common/widgets/custom_outlined_button.dart';
 import 'package:find_cook/common/widgets/error_widget.dart';
 import 'package:find_cook/common/widgets/text_view.dart';
 import 'package:find_cook/features/mybookings/data/bookingsRepository/bookings_repositoryImpl.dart';
@@ -86,6 +87,25 @@ class _MybookingsState extends State<Mybookings> {
             }
             if (state is MyBookingsCookSuccessState) {
               final mybooks = state.response;
+              
+              if(state.response.isEmpty){
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ImageWidget(imageUrl: "assets/png/empty.png",size: 200,),
+                        20.verticalSpace,
+
+                        TextView(text: "You haven't made any booking yet",align: TextAlign.center,),
+                        30.verticalSpace,
+                        CustomOutlinedButton(child: TextView(text: "Book Now"), onPressed: (){})
+                      ],
+                    ),
+                  ),
+                );
+              }
               return Padding(
                 padding: const EdgeInsets.all(18),
 

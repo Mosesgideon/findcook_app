@@ -9,6 +9,10 @@
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>This app needs your location at all times to function properly.</string>
 
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs access to camera to take photos</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to photos to select images</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

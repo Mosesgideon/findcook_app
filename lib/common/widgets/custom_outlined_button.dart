@@ -44,7 +44,8 @@ class _CustomOutlinedButtonState extends State<CustomOutlinedButton> {
                   borderRadius: BorderRadius.circular(widget.radius ?? 10),
                   side: BorderSide(
                     color: widget.outlinedColr ??
-                        Color(0xff992002)
+                        Color(0xfffaab65),
+                    width: 2
                   ),
                 ),
                 elevation: 0,

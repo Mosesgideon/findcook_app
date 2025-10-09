@@ -102,23 +102,20 @@ class AuthRepositoryImpl extends AuthRepository {
           'username': payload.username,
           'phone': payload.phone,
           'houseAddress': payload.houseAddress,
+          'role': payload.role,
           'createdAt': FieldValue.serverTimestamp(),
         };
 
-        // await users.doc(userUid).set(userData);
-        //
-        // // ✅ Return AuthSuccessResponse using fromJson
-        // await SharedPreferencesClass.setUserData(userData);
-        //
-        // return AuthSuccessResponse.fromJson(userData);
+        ///  Save user in Firestore
+        await users.doc(userUid).set(userData, SetOptions(merge: true));
 
-        /// Create AuthSuccessResponse
+        ///  Return AuthSuccessResponse
         final authResponse = AuthSuccessResponse.fromJson(userData);
 
-        /// Save to SharedPreferences
+        ///  Save locally in SharedPreferences
         await SharedPreferencesClass.setUserData(authResponse);
 
-        return AuthSuccessResponse.fromJson(userData);
+        return authResponse;
       } else {
         throw AuthException('User ID not found after registration.');
       }

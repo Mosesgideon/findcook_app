@@ -3,17 +3,20 @@ import 'package:find_cook/common/widgets/custom_dialogs.dart';
 import 'package:find_cook/common/widgets/image_widget.dart';
 import 'package:find_cook/common/widgets/text_view.dart';
 import 'package:find_cook/features/location/data/models/location_payload.dart';
+import 'package:find_cook/features/onboarding/screens/onboarding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../cook_onboarding/presentations/screens/onboarding_1.dart';
 import '../../../dash_board/screens/base_page.dart';
 import '../../../location/data/data/repository_impl/location_repository_impl.dart';
 import '../../../location/location_bloc/enable_loction_bloc.dart';
 
 class EnableLocationScreen extends StatefulWidget {
-  const EnableLocationScreen({super.key});
+  final String role;
+  const EnableLocationScreen({super.key, required this.role});
 
   @override
   State<EnableLocationScreen> createState() => _EnableLocationScreenState();
@@ -95,7 +98,16 @@ class _EnableLocationScreenState extends State<EnableLocationScreen> {
       Navigator.pop(context);
 
       CustomDialogs.showToast("Location Enabled");
-      Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
+
+      if(widget.role=="Client/User"){
+        Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
+
+      }
+      else{
+        Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>Onboarding1()));
+
+      }
+
     }
   }
 }

@@ -10,6 +10,8 @@ class AuthSuccessResponse {
   final String phone;
   final String houseAddress;
   final String password;
+  final String profileImage;
+  final String role;
   final UserLocation location;
 
   const AuthSuccessResponse({
@@ -21,6 +23,8 @@ class AuthSuccessResponse {
     required this.phone,
     required this.houseAddress,
     required this.password,
+    required this.role,
+    required this.profileImage,
     required this.location,
   });
 
@@ -35,7 +39,9 @@ class AuthSuccessResponse {
     'phone': phone,
     'houseAddress': houseAddress,
     'password': password,
+    'profileImage': profileImage,
     'location': location.toJson(),
+    'role': role,
   };
 
   /// Convert to Firestore data (adds server timestamp)
@@ -46,6 +52,8 @@ class AuthSuccessResponse {
     'username': username,
     'phone': phone,
     'houseAddress': houseAddress,
+    'role': role,
+    'profileImage': profileImage,
     'location': location.toJson(),
     'createdAt': FieldValue.serverTimestamp(),
   };
@@ -59,6 +67,8 @@ class AuthSuccessResponse {
     'phone': phone,
     'houseAddress': houseAddress,
     'password': password,
+    'role': role,
+    'profileImage': profileImage,
     'location': location.toJson(),
     'isLoggedIn': true,
   };
@@ -73,6 +83,8 @@ class AuthSuccessResponse {
       phone: json['phone'] ?? '',
       houseAddress: json['houseAddress'] ?? '',
       password: json['password'] ?? '',
+      role: json['role'] ?? '',
+      profileImage: json['profileImage'] ?? '',
       location: json['location'] != null
           ? UserLocation.fromJson(json['location'])
           : UserLocation.empty(),

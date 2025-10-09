@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:find_cook/features/cook_onboarding/data/models/cookpayload.dart';
 import 'package:find_cook/features/home_screen/data/data/repository_impl.dart';
 
 import '../../data/models/cook_models.dart';
@@ -17,6 +18,7 @@ class CookBloc extends Bloc<CookEvent, CookState> {
     });
 
     on<GetCookEvent>(_mapGetCookEventToState);
+    on<AddCookEvent>(_mapGAddCookEventToState);
   }
 
   Future<void> _mapGetCookEventToState(
@@ -31,6 +33,21 @@ class CookBloc extends Bloc<CookEvent, CookState> {
     } on Exception catch (e) {
       // TODO
       emit(CookFailuireSate(e.toString()));
+    }
+  }
+
+  FutureOr<void> _mapGAddCookEventToState(
+    AddCookEvent event,
+    Emitter<CookState> emit,
+  ) {
+    emit(CookLoadingSate());
+    try {
+      repositoryImpl.createCooks(event.payload);
+      emit(AddCookSccessSate());
+    } on Exception catch (e) {
+      emit(CookFailuireSate(e.toString()));
+      rethrow;
+      // TODO
     }
   }
 }

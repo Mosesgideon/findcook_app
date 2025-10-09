@@ -10,6 +10,7 @@ class AuthPayload {
   final String phone;
   final String houseAddress;
   final String password;
+  final String role;
 
   const AuthPayload({
     this.user,
@@ -20,6 +21,7 @@ class AuthPayload {
     required this.phone,
     required this.houseAddress,
     required this.password,
+    required this.role,
   });
 
   bool get success => user != null;
@@ -31,6 +33,7 @@ class AuthPayload {
     'username': username,
     'phone': phone,
     'houseAddress': houseAddress,
+    'role': role,
     // Remove password from JSON - never store passwords in database
   };
 
@@ -42,6 +45,7 @@ class AuthPayload {
     'username': username,
     'phone': phone,
     'houseAddress': houseAddress,
+    'role': role,
     'createdAt': FieldValue.serverTimestamp(),
   };
 }

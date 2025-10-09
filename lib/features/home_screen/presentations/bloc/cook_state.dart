@@ -12,6 +12,10 @@ class CookLoadingSate extends CookState {
   @override
   // TODO: implement props
   List<Object?> get props =>[];
+}class AddCookSccessSate extends CookState {
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[];
 }
 class CookSuccessSate extends CookState {
   List<AppCookModelResponse> response;

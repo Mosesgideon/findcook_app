@@ -33,6 +33,10 @@ class _SignupScreenState extends State<SignupScreen> {
   final passwordController = TextEditingController();
   final usernameController = TextEditingController();
   final authbloc = AuthBloc(AuthRepositoryImpl());
+
+  final List identity=["Client/User","Cook/Chef"];
+
+  String? selectedIdentity;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,19 +173,82 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void registerUser() {
+
     if (key.currentState!.validate()) {
-      authbloc.add(
-        RegisterEvent(
-          AuthPayload(
-            fullname: nameController.text.trim(),
-            email: emailController.text.trim(),
-            username: usernameController.text.trim(),
-            phone: numberController.text.trim(),
-            houseAddress: addressController.text.trim(),
-            password: passwordController.text.trim(),
-          ),
-        ),
-      );
+
+      CustomDialogs.showBottomSheet(context, StatefulBuilder(
+
+        builder: (BuildContext context, void Function(void Function()) setState) {
+          return  Container(
+            width: 1.sw,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20),
+                ),
+                color: Colors.white
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                TextView(text: "How do we identify you?",),
+                // TextView(text: "Please select who you are",),
+                20.verticalSpace,
+
+                ...List.generate(identity.length, (index)=>  Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    onTap: (){
+                      setState(() {
+                        selectedIdentity = identity[index];
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(selectedIdentity == identity[index]
+                            ? Icons.check_circle
+                            : Icons.circle_outlined,
+                          color: selectedIdentity == identity[index]
+                              ? Color(0xfffaab65)
+                              : Colors.grey,
+                          size: 15,),
+                        5.horizontalSpace,
+                        TextView(text: identity[index]),
+                      ],
+                    ),
+                  ),
+                )),
+                20.verticalSpace,
+                CustomButton(child: TextView(text: "Register"), onPressed: (){
+
+                  if(selectedIdentity==null||selectedIdentity!.isEmpty){
+
+                    CustomDialogs.showToast("please select whom you are");
+                  }
+                  authbloc.add(
+                    RegisterEvent(
+                      AuthPayload(
+                          fullname: nameController.text.trim(),
+                          email: emailController.text.trim(),
+                          username: usernameController.text.trim(),
+                          phone: numberController.text.trim(),
+                          houseAddress: addressController.text.trim(),
+                          password: passwordController.text.trim(),
+                          role:selectedIdentity!
+                      ),
+                    ),
+                  );
+                })
+
+
+              ],
+            ),
+          );
+        },
+
+      ));
+
     }
   }
 
@@ -198,7 +265,7 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.pop(context);
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (ctx) => EnableLocationScreen()),
+        CupertinoPageRoute(builder: (ctx) => EnableLocationScreen(role: selectedIdentity.toString(),)),
       );
     }
   }

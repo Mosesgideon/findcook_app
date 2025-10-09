@@ -1,9 +1,12 @@
 
 import 'package:find_cook/common/widgets/custom_appbar.dart';
 import 'package:find_cook/common/widgets/text_view.dart';
+import 'package:find_cook/features/mybookings/presentations/screens/cook_bookings.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../core/services/share_prefs/shared_prefs_save.dart';
+import '../../authentication/data/models/AuthSuccessResponse.dart';
 import '../../feeds/presentations/screens/app_feeds.dart';
 import '../../home_screen/presentations/screens/home_screen.dart';
 import '../../mybookings/presentations/screens/mybookings.dart';
@@ -21,15 +24,37 @@ class BasePage extends StatefulWidget {
 class _BasePageState extends State<BasePage> {
   final controller = ScrollController();
   int selectedIndex=0;
+  final shared = SharedPreferencesClass();
+  AuthSuccessResponse? user;
 
-  static List<StatefulWidget> pages =[
-    HomeScreen(),
-    Mybookings(),
-    AppFeeds(),
-    AppSettinggs(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await SharedPreferencesClass.getUserData();
+    setState(() {
+      user = data;
+    });
+  }
+
+
+  // static List<StatefulWidget> pages =[
+  //   HomeScreen(),
+  // if (user?.role == "Cook/Chef") CookBookings(): Mybookings(),
+  //   AppFeeds(),
+  //   AppSettinggs(),
+  // ];
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeScreen(),
+      if (user?.role == "Cook/Chef") CookBookings() else Mybookings(),
+      AppFeeds(),
+      AppSettinggs(),
+    ];
     return Scaffold(
 
 

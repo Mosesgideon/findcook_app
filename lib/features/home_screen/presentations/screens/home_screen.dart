@@ -148,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: InkWell(
                                 onTap: () {
+                                  print(cook[ctx].cookID.toString());
                                   Navigator.push(
                                     context,
                                     CupertinoPageRoute(
@@ -329,6 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state is CookSuccessSate) {
       Navigator.pop(context);
       print(state.response.length);
+      print(state.response.first.role);
       print(state.response.first.cookID.toString());
     }
   }

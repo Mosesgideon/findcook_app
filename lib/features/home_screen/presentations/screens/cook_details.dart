@@ -170,7 +170,7 @@ class _CookDetailsState extends State<CookDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextView(
-                    text: "About ${widget.cookName}",
+                    text: "About ${widget.cookID.toString()}",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),

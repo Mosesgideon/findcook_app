@@ -4,21 +4,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AppCookModelResponse {
   final User? user;
   final String? cookID;
-  final String cookName;
-  final String cookEmail;
-  final String cookAbout;
-  final String cookLocation;
-  final String yearsOfExperience;
-  final List<String> cookType;   // 🔥 FIXED to List<String>
-  final String cookChargePerHr;
-  final String marriageStatus;
+  final String cookName;//
+  final String cookEmail;//
+  final String cookAbout;//
+  final String cookLocation;//
+  final String yearsOfExperience;//
+  final List<String> cookType;
+  final String cookChargePerHr;//
+  final String marriageStatus;//
   final List<String> cookLanguages;
-  final String cookUsername;
-  final String cookReligion;
-  final String cookPhone;
+  final String cookUsername;//
+  final String cookReligion;//
+  final String cookPhone;//
   final String cookProfileImage;
   final String cookCoverImage;
-  final String cookHouseAddress;
+  final String cookHouseAddress;//
+  final String role;//
   final List<String> cookGallery;
   final List<String> cookServices;
   final List<String> cookSpecialMeals;
@@ -44,6 +45,7 @@ class AppCookModelResponse {
     required this.cookHouseAddress,
     required this.cookGallery,
     required this.cookServices,
+    required this.role,
     required this.cookSpecialMeals,
     required this.ratings,
   });
@@ -67,6 +69,7 @@ class AppCookModelResponse {
       cookProfileImage: json['cookProfileImage']?.toString() ?? '',
       cookCoverImage: json['cookCoverImage']?.toString() ?? '',
       cookHouseAddress: json['cookHouseAddress']?.toString() ?? '',
+      role: json['role']?.toString() ?? '',
       cookGallery: List<String>.from(json['cookGallery'] ?? []),
       cookServices: List<String>.from(json['cookServices'] ?? []),
       cookSpecialMeals: List<String>.from(json['cookSpecialMeals'] ?? []),
