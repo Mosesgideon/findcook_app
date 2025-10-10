@@ -79,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextView(text: user?.location.placeName ?? ''),
                   ],
                 ),
+
+
                 CircleAvatar(child: Icon(Iconsax.user)),
               ],
             ),
@@ -148,12 +150,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: InkWell(
                                 onTap: () {
+                                  print("🎯 Tapped cook item at index: $ctx");
+                                  print("🔍 Cook ID from list: ${cook[ctx].cookID}");
+                                  print("🔍 Cook ID toString: ${cook[ctx].cookID.toString()}");
+                                  print("🔍 Cook Name: ${cook[ctx].cookName}");
+                                  print("🔍 Full cook object: ${cook[ctx]}");
                                   print(cook[ctx].cookID.toString());
                                   Navigator.push(
                                     context,
                                     CupertinoPageRoute(
                                       builder: (ctxNav) => CookDetails(response: state.response, cookName: cook[ctx].cookName, cookEmail: cook[ctx].cookEmail, cookAbout: cook[ctx].cookAbout, cookLocation:  cook[ctx].cookLocation, yearsOfExperience:  cook[ctx].yearsOfExperience, cookType:  cook[ctx].cookType, cookChargePerHr:  cook[ctx].cookChargePerHr, marriageStatus:  cook[ctx].marriageStatus, cookLanguages:  cook[ctx].cookLanguages, cookUsername:  cook[ctx].cookUsername
-                                          , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings, cookID: cook[ctx].cookID.toString(),
+                                          , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings, cookID: cook[ctx].cookID.toString(), docID: cook[ctx].docID.toString(),
                                       ),
                                     ),
                                   );
@@ -193,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 CupertinoPageRoute(
                                                   builder: (ctxNav) => CookDetails(response: state.response, cookName: cook[ctx].cookName, cookEmail: cook[ctx].cookEmail, cookAbout: cook[ctx].cookAbout, cookLocation:  cook[ctx].cookLocation, yearsOfExperience:  cook[ctx].yearsOfExperience, cookType:  cook[ctx].cookType, cookChargePerHr:  cook[ctx].cookChargePerHr, marriageStatus:  cook[ctx].marriageStatus, cookLanguages:  cook[ctx].cookLanguages, cookUsername:  cook[ctx].cookUsername
                                                       , cookReligion:  cook[ctx].cookReligion, cookPhone:  cook[ctx].cookPhone, cookProfileImage:  cook[ctx].cookProfileImage, cookCoverImage:  cook[ctx].cookCoverImage, cookHouseAddress:  cook[ctx].cookHouseAddress, cookGallery:  cook[ctx].cookGallery, cookServices:  cook[ctx].cookServices, cookSpecialMeals:  cook[ctx].cookSpecialMeals, ratings:  cook[ctx].ratings,cookID: cook[ctx].cookID.toString(),
+                                                    docID: cook[ctx].docID.toString(),
                                                   ),
                                                 ),
                                               );

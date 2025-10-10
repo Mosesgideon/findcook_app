@@ -1,5 +1,6 @@
 class AppBookingModelPayload {
   AppBookingModelPayload({
+    required this.docID,
     required this.cookId,
     required this.clientId,
     required this.cookName,
@@ -29,8 +30,10 @@ class AppBookingModelPayload {
     required this.clientSelectedSpecialMeals,
     required this.notes,
     required this.status,
+    required this.eventstatus,
   });
 
+  final String? docID;
   final String? cookId;
   final String? clientId;
   final String? cookName;
@@ -60,8 +63,10 @@ class AppBookingModelPayload {
   final List<String> clientSelectedSpecialMeals;
   final String notes;
   final String status;
+  final String eventstatus;
 
   AppBookingModelPayload copyWith({
+    String? docID,
     String? cookId,
     String? clientId,
     String? cookName,
@@ -91,8 +96,10 @@ class AppBookingModelPayload {
     List<String>? clientSelectedSpecialMeals,
     String? notes,
     String? status,
+    String? eventstatus,
   }) {
     return AppBookingModelPayload(
+      docID: docID ?? this.docID,
       cookId: cookId ?? this.cookId,
       clientId: clientId ?? this.clientId,
       cookName: cookName ?? this.cookName,
@@ -122,11 +129,13 @@ class AppBookingModelPayload {
       clientSelectedSpecialMeals: clientSelectedSpecialMeals ?? this.clientSelectedSpecialMeals,
       notes: notes ?? this.notes,
       status: status ?? this.status,
+      eventstatus: eventstatus ?? this.eventstatus,
     );
   }
 
   factory AppBookingModelPayload.fromJson(Map<String, dynamic> json){
     return AppBookingModelPayload(
+      docID: json["docID"],
       cookId: json["cookID"],
       clientId: json["clientID"],
       cookName: json["cookName"],
@@ -156,10 +165,12 @@ class AppBookingModelPayload {
       clientSelectedSpecialMeals: json["clientSelectedSpecialMeals"] == null ? [] : List<String>.from(json["clientSelectedSpecialMeals"]!.map((x) => x)),
       notes: json["notes"],
       status: json["status"],
+      eventstatus: json["eventstatus"],
     );
   }
 
   Map<String, dynamic> toJson() => {
+    "docID": docID,
     "cookID": cookId,
     "clientID": clientId,
     "cookName": cookName,
@@ -189,10 +200,11 @@ class AppBookingModelPayload {
     "clientSelectedSpecialMeals": clientSelectedSpecialMeals.map((x) => x).toList(),
     "notes":notes,
     "status":status,
+    "eventstatus":eventstatus,
   };
 
   @override
   String toString(){
-    return "$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals,$notes ,$status";
+    return ",$docID,$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals,$notes ,$status ,$eventstatus";
   }
 }

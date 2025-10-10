@@ -16,6 +16,7 @@ import '../../../authentication/data/models/AuthSuccessResponse.dart';
 
 class Bookbottomsheet extends StatefulWidget {
   final String cookId;
+  final String docID;
   final String cookName;
   final String cookEmail;
   final String cookAbout;
@@ -38,7 +39,7 @@ class Bookbottomsheet extends StatefulWidget {
   const Bookbottomsheet({
     super.key,
     required this.cookServices,
-    required this.cookSpecialMeals, required this.cookId, required this.cookName, required this.cookEmail, required this.cookAbout, required this.cookLocation, required this.yearsOfExperience, required this.cookType, required this.cookChargePerHr, required this.cookmarriageStatus, required this.cookLanguages, required this.cookUsername, required this.cookReligion, required this.cookPhone, required this.cookProfileImage, this.cookCoverImage, required this.cookHouseAddress, required this.cookGallery,
+    required this.cookSpecialMeals, required this.cookId, required this.cookName, required this.cookEmail, required this.cookAbout, required this.cookLocation, required this.yearsOfExperience, required this.cookType, required this.cookChargePerHr, required this.cookmarriageStatus, required this.cookLanguages, required this.cookUsername, required this.cookReligion, required this.cookPhone, required this.cookProfileImage, this.cookCoverImage, required this.cookHouseAddress, required this.cookGallery, required this.docID,
   });
 
   @override
@@ -255,6 +256,7 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
           .map((index) => widget.cookSpecialMeals[index])
           .toList();
       bookBloc.add(BookCookEvent(AppBookingModelPayload(
+          docID: widget.docID.toString(),
           cookId: widget.cookId.toString(),
           clientId: user?.userID.toString(),
           cookName: widget.cookName,
@@ -282,7 +284,7 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
           cookGallery: widget.cookGallery,
           clientSelectedServices: selectedServiceNames,
           clientSelectedSpecialMeals: selectedMealNames, notes: proposalController.text.trim(),
-          status: "pending"
+          status: "pending", eventstatus: 'pending'
       )));
     }
   }

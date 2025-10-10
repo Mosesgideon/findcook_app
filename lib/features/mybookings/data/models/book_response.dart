@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppBookingResponse {
   final String? cookId;
+  final String? docId;
   final String? clientId;
   final String? cookName;
   final String? clientName;
@@ -30,9 +31,12 @@ class AppBookingResponse {
   final List<String> clientSelectedSpecialMeals;
   final String? notes;
   final DateTime? bookedTime;
-  final String status; // ✅ booking status
+  final String? status;
+  final String? eventstatus;
+  final DateTime? dateAccepted;
 
   AppBookingResponse({
+    this.docId,
     this.cookId,
     this.clientId,
     this.cookName,
@@ -62,14 +66,17 @@ class AppBookingResponse {
     this.clientSelectedSpecialMeals = const [],
     this.notes,
     this.bookedTime,
-    this.status = "pending", // default value
+    this.status,  // default value
+    this.eventstatus,  // default value
+    this.dateAccepted,  // default value
   });
 
   /// Factory constructor to create from JSON (Firestore or API)
   factory AppBookingResponse.fromJson(Map<String, dynamic> json) {
     return AppBookingResponse(
-      cookId: json['cookId'] as String?,
-      clientId: json['clientId'] as String?,
+      cookId: json['cookID'] as String?,
+      docId: json['docID'] as String?,
+      clientId: json['clientID'] as String?,
       cookName: json['cookName'] as String?,
       clientName: json['clientName'] as String?,
       cookEmail: json['cookEmail'] as String?,
@@ -101,15 +108,22 @@ class AppBookingResponse {
           ? (json['createdAt'] as Timestamp).toDate()
           : DateTime.tryParse(json['createdAt'].toString()))
           : null,
-      status: json['status'] as String? ?? "pending",
+      dateAccepted: json['dateAccepted'] != null
+          ? (json['dateAccepted'] is Timestamp
+          ? (json['dateAccepted'] as Timestamp).toDate()
+          : DateTime.tryParse(json['dateAccepted'].toString()))
+          : null,
+      status: json['status']  ,
+      eventstatus: json['eventstatus']  ,
     );
   }
 
   /// Convert back to JSON (for Firestore/API)
   Map<String, dynamic> toJson() {
     return {
-      "cookId": cookId,
-      "clientId": clientId,
+      "docID": docId,
+      "cookID": cookId,
+      "clientID": clientId,
       "cookName": cookName,
       "clientName": clientName,
       "cookEmail": cookEmail,
@@ -138,6 +152,7 @@ class AppBookingResponse {
       "notes": notes,
       "createdAt": bookedTime != null ? Timestamp.fromDate(bookedTime!) : null,
       "status": status,
+      "eventstatus": eventstatus,
     };
   }
 }

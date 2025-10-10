@@ -29,6 +29,10 @@ class CookBloc extends Bloc<CookEvent, CookState> {
     try {
       var response = await repositoryImpl.getCooks();
       print(response.length);
+      print(response.first.cookID.toString());
+      print("Cook ID: ${response.first.cookID}");
+
+
       emit(CookSuccessSate(response));
     } on Exception catch (e) {
       // TODO

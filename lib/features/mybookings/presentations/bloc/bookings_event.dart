@@ -19,3 +19,11 @@ class MyBookingEvent extends BookingsEvent {
   List<Object?> get props => [];
 
 }
+class UpdateBookingEvent extends BookingsEvent {
+  String bookingId;
+  UpdateBookingEvent(this.bookingId);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

@@ -12,23 +12,32 @@ class AllCooksRepositoryImpl extends AllCooksRepository {
   );
   final cooks = FirebaseFirestore.instance.collection("Cooks");
   final store = FirebaseFirestore.instance;
+
   @override
   Future<List<AppCookModelResponse>> getCooks() async {
     try {
       final snapshot = await store.collection("Cooks").get();
 
-      final cooks =
-          snapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            print("Cook data: $data");
-            return AppCookModelResponse.fromJson({...data, 'cookID': doc.id});
-          }).toList();
-      print(cooks.length);
+      final cooks = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        // 🔹 Inject Firestore-generated document ID
+        data['docID'] = doc.id;
+
+        print("Firestore Document ID: ${doc.id}");
+        print("Cook Data cookID: ${data['cookID']}");
+
+        return AppCookModelResponse.fromJson(data);
+      }).toList();
+
+      print("✅ Total cooks fetched: ${cooks.length}");
       return cooks;
     } catch (e) {
       throw Exception("Failed to fetch cooks: $e");
     }
   }
+
+
 
   @override
   Future<void> createCooks(AppCookPayload payload) async {

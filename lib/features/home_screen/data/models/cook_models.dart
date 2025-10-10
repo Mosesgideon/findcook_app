@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AppCookModelResponse {
-  final User? user;
+  final String? docID;
   final String? cookID;
   final String cookName;//
   final String cookEmail;//
@@ -26,7 +26,7 @@ class AppCookModelResponse {
   final List<CookRating> ratings;
 
   const AppCookModelResponse({
-    this.user,
+    this.docID,
     this.cookID,
     required this.cookName,
     required this.cookEmail,
@@ -52,7 +52,7 @@ class AppCookModelResponse {
 
   factory AppCookModelResponse.fromJson(Map<String, dynamic> json, {User? user}) {
     return AppCookModelResponse(
-      user: user,
+      docID: json['docID']?.toString(),
       cookID: json['cookID']?.toString(),
       cookName: json['cookName']?.toString() ?? '',
       cookEmail: json['cookEmail']?.toString() ?? '',

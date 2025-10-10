@@ -16,7 +16,9 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
       // TODO: implement event handler
     });
     on<BookCookEvent>(_mapBookCookEventToState);
+
     on<MyBookingEvent>(_mapMyBookingEventToState);
+    on<UpdateBookingEvent>(_mapUpdateBookingEventToState);
   }
 
   Future<void> _mapBookCookEventToState(BookCookEvent event, Emitter<BookingsState> emit
@@ -43,5 +45,17 @@ try {
   rethrow;
   // TODO
 }
+  }
+
+  Future<void> _mapUpdateBookingEventToState(UpdateBookingEvent event, Emitter<BookingsState> emit) async {
+    emit(BookingsLoadingState());
+    try {
+      var response=await repository.updateMyBooking(event.bookingId,);
+      emit(UpdateBookingsSuccessState());
+    } on Exception catch (e) {
+      emit(BookingsFailireState(e.toString()));
+      rethrow;
+      // TODO
+    }
   }
 }

@@ -15,6 +15,7 @@ import '../../data/models/cook_models.dart';
 class CookDetails extends StatefulWidget {
   final List<AppCookModelResponse> response;
   final String cookID;
+  final String docID;
   final String cookName;
   final String cookEmail;
   final String cookAbout;
@@ -56,7 +57,7 @@ class CookDetails extends StatefulWidget {
     required this.cookGallery,
     required this.cookServices,
     required this.cookSpecialMeals,
-    required this.ratings,
+    required this.ratings, required this.docID,
   });
 
   @override
@@ -170,7 +171,7 @@ class _CookDetailsState extends State<CookDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextView(
-                    text: "About ${widget.cookID.toString()}",
+                    text: "About ${widget.cookUsername.toString()}",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -396,6 +397,7 @@ class _CookDetailsState extends State<CookDetails> {
                   CustomDialogs.showBottomSheet(
                     context,
                     Bookbottomsheet(
+                      docID: widget.docID,
                       cookServices: widget.cookServices,
                       cookSpecialMeals: widget.cookSpecialMeals,
                       cookId: widget.cookID.toString(),
