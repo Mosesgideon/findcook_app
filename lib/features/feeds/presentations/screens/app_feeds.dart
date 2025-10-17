@@ -1,12 +1,17 @@
 import 'package:find_cook/common/widgets/custom_dialogs.dart';
 import 'package:find_cook/common/widgets/outlined_form_field.dart';
 import 'package:find_cook/features/feeds/presentations/screens/feedimage.dart';
+import 'package:find_cook/features/feeds/presentations/screens/postscreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/image_widget.dart';
 import '../../../../common/widgets/text_view.dart';
+import '../../../../core/services/share_prefs/shared_prefs_save.dart';
+import '../../../authentication/data/models/AuthSuccessResponse.dart';
 import 'feedvideo.dart';
 
 class AppFeeds extends StatefulWidget {
@@ -17,6 +22,21 @@ class AppFeeds extends StatefulWidget {
 }
 
 class _AppFeedsState extends State<AppFeeds> {
+  final shared = SharedPreferencesClass();
+  AuthSuccessResponse? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await SharedPreferencesClass.getUserData();
+    setState(() {
+      user = data;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -50,8 +70,47 @@ class _AppFeedsState extends State<AppFeeds> {
         body:TabBarView(children: [
           Feedimage(),
           Feedvideo(),
-        ])
+        ]),
+        // floatingActionButtonLocation: ,
+        floatingActionButton:user?.role=="Cook/Chef"? Padding(
+          padding: const EdgeInsets.only(bottom: 100),
+          child: GlassmorphicContainer(
+            width: 60,
+            height: 60,
+            borderRadius: 20,
+            blur: 20,
+            alignment: Alignment.bottomCenter,
+            border: 2,
+            linearGradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFffffff).withOpacity(0.1),
+                  Color(0xFFFFFFFF).withOpacity(0.05),
+                ],
+                stops: [
+                  0.1,
+                  1,
+                ]),
+            borderGradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFffffff).withOpacity(0.5),
+                Color((0xFFFFFFFF)).withOpacity(0.5),
+              ],
+            ),
+            child: Center(child: InkWell(
+              onTap: (){
+                Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>Postscreen()));
+              },
+                child: Icon(Iconsax.add,size: 30,color: Color(0xfffaab65),))),
+          ),
+        ):SizedBox(),
+
+
       ),
+
     );
   }
 }
@@ -110,6 +169,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           OutlinedFormField(hint: "comment....")
         ],
       ),
+
     );
   }
 }

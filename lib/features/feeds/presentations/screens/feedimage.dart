@@ -5,6 +5,8 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../common/widgets/custom_dialogs.dart';
 import '../../../../common/widgets/image_widget.dart';
 import '../../../../common/widgets/text_view.dart';
+import '../../../../core/services/share_prefs/shared_prefs_save.dart';
+import '../../../authentication/data/models/AuthSuccessResponse.dart';
 import 'app_feeds.dart';
 class Feedimage extends StatefulWidget {
   const Feedimage({super.key});
@@ -14,8 +16,10 @@ class Feedimage extends StatefulWidget {
 }
 
 class _FeedimageState extends State<Feedimage> {
+
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
