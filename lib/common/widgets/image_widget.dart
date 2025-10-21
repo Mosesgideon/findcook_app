@@ -89,6 +89,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                   borderRadius: widget.borderRadius,
                   shape: widget.shape ?? BoxShape.rectangle,
                   border: widget.border,
+
                   image: DecorationImage(
                       image: imageProvider,
                       fit: BoxFit.cover,
@@ -98,10 +99,34 @@ class _ImageWidgetState extends State<ImageWidget> {
                       }),
                 ),
               ),
-              placeholder: (context, url) => _ErrorWidget(),
-              errorWidget: (context, url, error) {
-                return _ErrorWidget();
-              },
+              placeholder: (context, url) => Container(
+                width: widget.size ?? widget.width,
+                height: widget.size ?? widget.height,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: widget.borderRadius,
+                  shape: widget.shape ?? BoxShape.rectangle,
+                  border: widget.border,
+                  color: Colors.grey.shade200,
+                ),
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                width: widget.size ?? widget.width,
+                height: widget.size ?? widget.height,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: widget.borderRadius,
+                  shape: widget.shape ?? BoxShape.rectangle,
+                  border: widget.border,
+                  color: Colors.grey.shade200,
+                ),
+                child: const Icon(Icons.broken_image, color: Colors.grey),
+              ),
+
             ),
           );
         }

@@ -34,3 +34,11 @@ class AddFeedsSuccessState extends FeedsState {
   List<Object?> get props => [responseModel];
 
 }
+class GetFeedsSuccessState extends FeedsState {
+  PostResponseModel responseModel;
+  GetFeedsSuccessState(this.responseModel);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [responseModel];
+
+}

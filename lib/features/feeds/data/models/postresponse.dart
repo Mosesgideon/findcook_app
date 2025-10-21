@@ -1,3 +1,5 @@
+import 'package:find_cook/features/authentication/data/models/AuthSuccessResponse.dart';
+
 class PostResponseModel {
   PostResponseModel({
     required this.status,
@@ -7,39 +9,25 @@ class PostResponseModel {
 
   final String? status;
   final String? message;
-  final Data? data;
+  final List<Data>? data; // ✅ Make it a list
 
-  PostResponseModel copyWith({
-    String? status,
-    String? message,
-    Data? data,
-  }) {
-    return PostResponseModel(
-      status: status ?? this.status,
-      message: message ?? this.message,
-      data: data ?? this.data,
-    );
-  }
-
-  factory PostResponseModel.fromJson(Map<String, dynamic> json){
+  factory PostResponseModel.fromJson(Map<String, dynamic> json) {
     return PostResponseModel(
       status: json["status"],
       message: json["message"],
-      data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      data: json["data"] == null
+          ? null
+          : List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
     );
   }
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "message": message,
-    "data": data?.toJson(),
+    "data": data?.map((x) => x.toJson()).toList(),
   };
-
-  @override
-  String toString(){
-    return "$status, $message, $data, ";
-  }
 }
+
 
 class Data {
   Data({
@@ -51,6 +39,8 @@ class Data {
     required this.posterLocation,
     required this.timePosted,
     required this.writeUp,
+    required this.postType,
+    required this.poster_profile,
   });
 
   final String? image;
@@ -58,9 +48,11 @@ class Data {
   final String? posterName;
   final String? posterId;
   final String? postId;
-  final String? posterLocation;
+  final UserLocation? posterLocation;
   final DateTime? timePosted;
   final String? writeUp;
+  final String? postType;
+  final String? poster_profile;
 
   Data copyWith({
     String? image,
@@ -68,9 +60,11 @@ class Data {
     String? posterName,
     String? posterId,
     String? postId,
-    String? posterLocation,
+    UserLocation? posterLocation,
     DateTime? timePosted,
     String? writeUp,
+    String? postType,
+    String? poster_profile,
   }) {
     return Data(
       image: image ?? this.image,
@@ -81,6 +75,8 @@ class Data {
       posterLocation: posterLocation ?? this.posterLocation,
       timePosted: timePosted ?? this.timePosted,
       writeUp: writeUp ?? this.writeUp,
+      postType: postType ?? this.postType,
+      poster_profile: poster_profile ?? this.poster_profile,
     );
   }
 
@@ -91,9 +87,11 @@ class Data {
       posterName: json["posterName"],
       posterId: json["posterID"],
       postId: json["postID"],
-      posterLocation: json["posterLocation"],
+      posterLocation: json["location"],
       timePosted: DateTime.tryParse(json["timePosted"] ?? ""),
       writeUp: json["writeUp"],
+      postType: json["postType"],
+      poster_profile: json["poster_profile"],
     );
   }
 
@@ -106,10 +104,12 @@ class Data {
     "posterLocation": posterLocation,
     "timePosted": timePosted?.toIso8601String(),
     "writeUp": writeUp,
+    "postType": postType,
+    "poster_profile": poster_profile,
   };
 
   @override
   String toString(){
-    return "$image, $video, $posterName, $posterId, $postId, $posterLocation, $timePosted, $writeUp, ";
+    return "$image, $video, $posterName, $posterId, $postId, $posterLocation, $timePosted, $writeUp,$postType ,$poster_profile";
   }
 }

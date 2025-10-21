@@ -1,11 +1,12 @@
+import '../../../authentication/data/models/AuthSuccessResponse.dart';
+
 class PostModel {
   final String image;
   final String video;
   final String posterName;
   final String posterID;
-  final String postID;
-  final String posterLocation;
-  final String timePosted;
+  final String postType;
+  final UserLocation location;
   final String writeUp;
 
   PostModel({
@@ -13,9 +14,8 @@ class PostModel {
     required this.video,
     required this.posterName,
     required this.posterID,
-    required this.postID,
-    required this.posterLocation,
-    required this.timePosted,
+    required this.postType,
+    required this.location,
     required this.writeUp,
   });
 
@@ -26,9 +26,10 @@ class PostModel {
       "video": video,
       "posterName": posterName,
       "posterID": posterID,
-      "postID": postID,
-      "posterLocation": posterLocation,
-      "timePosted": timePosted,
+      // "postID": postID,
+      "postType": postType,
+      'location': location.toJson(),
+      // "timePosted": timePosted,
       "writeUp": writeUp,
     };
   }
@@ -40,9 +41,10 @@ class PostModel {
       video: json["video"] ?? "",
       posterName: json["posterName"] ?? "",
       posterID: json["posterID"] ?? "",
-      postID: json["postID"] ?? "",
-      posterLocation: json["posterLocation"] ?? "",
-      timePosted: json["timePosted"] ?? "",
+      postType: json["postType"] ?? "",
+      // postID: json["postID"] ?? "",
+      location: json["location"] ?? "",
+      // timePosted: json["timePosted"] ?? "",
       writeUp: json["writeUp"] ?? "",
     );
   }

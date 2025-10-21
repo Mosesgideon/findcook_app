@@ -4,4 +4,5 @@ import '../data/models/postmodels.dart';
 
 abstract class FeedsRepository{
   Future<PostResponseModel>postfeeds(PostModel payload);
+  Future<PostResponseModel>getfeeds();
 }

@@ -19,6 +19,7 @@ class FeedsBloc extends Bloc<FeedsEvent, FeedsState> {
     });
 
     on<AddfeedsEvent>(_mapAddfeedsEventToState);
+    on<GetfeedsEvent>(_mapGetfeedsEventToState);
   }
 
   Future<void> _mapAddfeedsEventToState(
@@ -34,5 +35,20 @@ class FeedsBloc extends Bloc<FeedsEvent, FeedsState> {
       rethrow;
       // TODO
     }
+  }
+
+  Future<void> _mapGetfeedsEventToState(GetfeedsEvent event, Emitter<FeedsState> emit) async {
+
+    emit(FeedsLoadingState());
+    try {
+      var response=await repository.getfeeds();
+      emit(GetFeedsSuccessState(response));
+      print(response);
+    } on Exception catch (e) {
+      emit(FeedsErrorState(e.toString()));
+      rethrow;
+      // TODO
+    }
+
   }
 }

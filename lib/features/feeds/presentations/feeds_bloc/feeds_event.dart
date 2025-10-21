@@ -11,3 +11,10 @@ class AddfeedsEvent extends FeedsEvent {
   // TODO: implement props
   List<Object?> get props => [model];
 }
+class GetfeedsEvent extends FeedsEvent {
+
+  GetfeedsEvent();
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
