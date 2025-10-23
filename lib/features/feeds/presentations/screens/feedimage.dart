@@ -162,7 +162,7 @@ class _FeedimageState extends State<Feedimage> {
                                 onTap: (){
                                   shareitem(
                                     "Shared post from Cook Services\n\n${feedItems[ctx].writeUp ?? ''}",
-                                    feedItems[ctx].image ?? '',
+                                    feedItems[ctx].image.toString() ?? '',
                                   );
 
                                 },
