@@ -2,6 +2,7 @@ import 'package:find_cook/common/widgets/custom_dialogs.dart';
 import 'package:find_cook/common/widgets/error_widget.dart';
 import 'package:find_cook/common/widgets/image_widget.dart';
 import 'package:find_cook/core/services/share_prefs/shared_prefs_save.dart';
+import 'package:find_cook/features/ai/ask_ai.dart';
 import 'package:find_cook/features/home_screen/data/data/repository_impl.dart';
 import 'package:find_cook/features/home_screen/presentations/bloc/cook_bloc.dart';
 import 'package:find_cook/features/home_screen/presentations/screens/cook_details.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -63,6 +65,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 100),
+        child: GlassmorphicContainer(
+          width: 60,
+          height: 60,
+          borderRadius: 20,
+          blur: 20,
+          alignment: Alignment.bottomCenter,
+          border: 2,
+          linearGradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFffffff).withOpacity(0.1),
+                Color(0xFFFFFFFF).withOpacity(0.05),
+              ],
+              stops: [
+                0.1,
+                1,
+              ]),
+          borderGradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFffffff).withOpacity(0.5),
+              Color((0xFFFFFFFF)).withOpacity(0.5),
+            ],
+          ),
+          child: Center(child: InkWell(
+              onTap: (){
+                Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>AskAiScreen()));
+              },
+              child: ImageWidget(imageUrl: "assets/png/ai.png",
+              onTap: (){
+                Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>AskAiScreen()));
+
+              },))),
+        ),
+      ),
       appBar: PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
         child: Container(
@@ -325,6 +366,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
+
 
   void _listenToetCookState(BuildContext context, CookState state) {
     if (state is CookLoadingSate) {
