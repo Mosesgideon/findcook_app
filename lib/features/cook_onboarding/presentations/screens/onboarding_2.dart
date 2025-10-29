@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:find_cook/common/widgets/image_widget.dart';
@@ -52,7 +53,6 @@ class _Onboarding2State extends State<Onboarding2> {
   XFile? file;
   XFile? profilefile;
 
-
   final List<String> religion = [
     "Christian",
     "Muslim",
@@ -68,9 +68,15 @@ class _Onboarding2State extends State<Onboarding2> {
 
   final ServicesController = TextEditingController();
   final specialController = TextEditingController();
-  final addcook=CookBloc(AllCooksRepositoryImpl());
+  final addcook = CookBloc(AllCooksRepositoryImpl());
   final shared = SharedPreferencesClass();
   AuthSuccessResponse? user;
+
+  // Add these variables to track upload state
+  bool _isUploading = false;
+  String? _profileImageUrl;
+  String? _coverImageUrl;
+  List<String> _galleryImageUrls = [];
 
   @override
   void initState() {
@@ -84,6 +90,7 @@ class _Onboarding2State extends State<Onboarding2> {
       user = data;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,15 +126,14 @@ class _Onboarding2State extends State<Onboarding2> {
                         selectedreligion = value;
                       });
                     },
-                    items:
-                        religion
-                            .map(
-                              (String reason) => DropdownMenuItem<String>(
-                                value: reason,
-                                child: TextView(text: reason, fontSize: 16),
-                              ),
-                            )
-                            .toList(),
+                    items: religion
+                        .map(
+                          (String reason) => DropdownMenuItem<String>(
+                        value: reason,
+                        child: TextView(text: reason, fontSize: 16),
+                      ),
+                    )
+                        .toList(),
                     buttonStyleData: const ButtonStyleData(
                       padding: EdgeInsets.symmetric(horizontal: 5),
                     ),
@@ -150,17 +156,16 @@ class _Onboarding2State extends State<Onboarding2> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children:
-                    services
-                        .map(
-                          (color) => Chip(
-                            label: Text(color.trim()),
-                            backgroundColor: Colors.grey[200],
-                            deleteIcon: Icon(Icons.close, size: 16),
-                            onDeleted: () => _removeServices(color),
-                          ),
-                        )
-                        .toList(),
+                children: services
+                    .map(
+                      (color) => Chip(
+                    label: Text(color.trim()),
+                    backgroundColor: Colors.grey[200],
+                    deleteIcon: Icon(Icons.close, size: 16),
+                    onDeleted: () => _removeServices(color),
+                  ),
+                )
+                    .toList(),
               ),
               5.verticalSpace,
               Row(
@@ -170,23 +175,15 @@ class _Onboarding2State extends State<Onboarding2> {
                       hint: "Event Service",
                       controller: ServicesController,
                       outlineColor: Color(0xfffaab65),
-                      validator:
-                          MultiValidator([
-                            RequiredValidator(
-                              errorText: 'This field is required',
-                            ),
-                          ]).call,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                          errorText: 'This field is required',
+                        ),
+                      ]).call,
                     ),
                   ),
                   8.horizontalSpace,
                   TextView(text: "Add", onTap: _addServices),
-                  // ElevatedButton(
-                  //   onPressed: _addServices,
-                  //   child: Text("Add"),
-                  //   style: ElevatedButton.styleFrom(
-                  //     padding: EdgeInsets.symmetric(vertical: 16),
-                  //   ),
-                  // ),
                 ],
               ),
               15.verticalSpace,
@@ -195,17 +192,16 @@ class _Onboarding2State extends State<Onboarding2> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children:
-                    cookSpecialMeals
-                        .map(
-                          (color) => Chip(
-                            label: Text(color.trim()),
-                            backgroundColor: Colors.grey[200],
-                            deleteIcon: Icon(Icons.close, size: 16),
-                            onDeleted: () => _removecookSpecialMeals(color),
-                          ),
-                        )
-                        .toList(),
+                children: cookSpecialMeals
+                    .map(
+                      (color) => Chip(
+                    label: Text(color.trim()),
+                    backgroundColor: Colors.grey[200],
+                    deleteIcon: Icon(Icons.close, size: 16),
+                    onDeleted: () => _removecookSpecialMeals(color),
+                  ),
+                )
+                    .toList(),
               ),
               5.verticalSpace,
               Row(
@@ -215,74 +211,76 @@ class _Onboarding2State extends State<Onboarding2> {
                       hint: "jollof rice....",
                       controller: specialController,
                       outlineColor: Color(0xfffaab65),
-                      validator:
-                          MultiValidator([
-                            RequiredValidator(
-                              errorText: 'This field is required',
-                            ),
-                          ]).call,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                          errorText: 'This field is required',
+                        ),
+                      ]).call,
                     ),
                   ),
                   8.horizontalSpace,
                   TextView(text: "Add", onTap: _addcookSpecialMeals),
-                  // ElevatedButton(
-                  //   onPressed: _addServices,
-                  //   child: Text("Add"),
-                  //   style: ElevatedButton.styleFrom(
-                  //     padding: EdgeInsets.symmetric(vertical: 16),
-                  //   ),
-                  // ),
                 ],
               ),
               15.verticalSpace,
               Row(
                 children: [
                   TextView(text: "Profile Image"),
-                  TextView(text: "*",color: Colors.red,),
-
+                  TextView(text: "*", color: Colors.red),
                 ],
               ),
               10.verticalSpace,
-             profilefile !=null?
-             Container(
-               padding: EdgeInsets.only(top: 10),
-               decoration:BoxDecoration(
-                   borderRadius: BorderRadius.circular(10),
-                   border: Border.all(color: Pallets.grey90)
-               ),
-               child: Column(
-                 children: [
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       2.horizontalSpace,
-                       InkWell(
-                           splashColor: Colors.transparent,
-                           onTap: (){
-                             setState(() {
-                               profilefile=null;
-                             });
-                           },
-
-                           child: Icon(Icons.cancel_rounded,color: Colors.grey,))
-                     ],
-                   ),
-                   10.verticalSpace,
-                   ClipOval(
-                     child: Container(
-                       height: 120,
-                       width: 120,
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(10),
-                           image: DecorationImage(image: AssetImage(profilefile!.path,),fit: BoxFit.cover)
-                     
-                       ),
-                     ),
-                   ),
-                 ],
-               ),
-             ):
-             InkWell(
+              profilefile != null
+                  ? Container(
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Pallets.grey90),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        2.horizontalSpace,
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              profilefile = null;
+                              _profileImageUrl = null;
+                            });
+                          },
+                          child: Icon(Icons.cancel_rounded, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    10.verticalSpace,
+                    ClipOval(
+                      child: Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: FileImage(File(profilefile!.path)),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_profileImageUrl != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "✓ Uploaded to Cloudinary",
+                          style: TextStyle(color: Colors.green, fontSize: 12),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+                  : InkWell(
                 onTap: () {
                   _pickProfileImage();
                 },
@@ -299,7 +297,6 @@ class _Onboarding2State extends State<Onboarding2> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.upload_file, color: Pallets.grey60),
-
                           10.horizontalSpace,
                           TextView(
                             text: "Click to upload profile image",
@@ -316,48 +313,58 @@ class _Onboarding2State extends State<Onboarding2> {
               Row(
                 children: [
                   TextView(text: "Cover Image"),
-                  TextView(text: "*",color: Colors.red,),
-
+                  TextView(text: "*", color: Colors.red),
                 ],
               ),
               10.verticalSpace,
-             file !=null?
-             Container(
-               padding: EdgeInsets.only(top: 10),
-               decoration:BoxDecoration(
-                   borderRadius: BorderRadius.circular(10),
-                   border: Border.all(color: Pallets.grey90)
-               ),
-               child: Column(
-                 children: [
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       2.horizontalSpace,
-                       InkWell(
-                           splashColor: Colors.transparent,
-                           onTap: (){
-                             setState(() {
-                               file=null;
-                             });
-                           },
-
-                           child: Icon(Icons.cancel_rounded,color: Colors.grey,))
-                     ],
-                   ),
-                   10.verticalSpace,
-                   Container(
-                     height: 120,
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(10),
-                         image: DecorationImage(image: AssetImage(file!.path,),fit: BoxFit.cover)
-
-                     ),
-                   ),
-                 ],
-               ),
-             ):
-             InkWell(
+              file != null
+                  ? Container(
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Pallets.grey90),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        2.horizontalSpace,
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              file = null;
+                              _coverImageUrl = null;
+                            });
+                          },
+                          child: Icon(Icons.cancel_rounded, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    10.verticalSpace,
+                    Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: FileImage(File(file!.path)),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    if (_coverImageUrl != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "✓ Uploaded to Cloudinary",
+                          style: TextStyle(color: Colors.green, fontSize: 12),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+                  : InkWell(
                 onTap: () {
                   _pickCoverImage();
                 },
@@ -374,7 +381,6 @@ class _Onboarding2State extends State<Onboarding2> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.upload_file, color: Pallets.grey60),
-
                           10.horizontalSpace,
                           TextView(
                             text: "Click to upload cover image",
@@ -390,12 +396,14 @@ class _Onboarding2State extends State<Onboarding2> {
               Row(
                 children: [
                   TextView(text: "Add Gallery"),
-                  TextView(text: "*",color: Colors.red,),
+                  TextView(text: "*", color: Colors.red),
                 ],
               ),
               10.verticalSpace,
               myfile != null && myfile!.isNotEmpty
-                  ? SizedBox(
+                  ? Column(
+                children: [
+                  SizedBox(
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -403,66 +411,110 @@ class _Onboarding2State extends State<Onboarding2> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              File(myfile![index].path),
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(
+                                  File(myfile![index].path),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              if (_galleryImageUrls.length > index)
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.check, color: Colors.white, size: 12),
+                                  ),
+                                ),
+                            ],
                           ),
                         );
                       },
                     ),
-                  )
+                  ),
+                  if (_galleryImageUrls.isNotEmpty && _galleryImageUrls.length == myfile!.length)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "✓ All gallery images uploaded to Cloudinary",
+                        style: TextStyle(color: Colors.green, fontSize: 12),
+                      ),
+                    ),
+                ],
+              )
                   : InkWell(
-                    onTap: () {
-                      _pickMultipleImages();
-                    },
-                    child: SizedBox(
-                      width: 1.sw,
-                      height: 80,
-                      child: DottedBorder(
-                        options: RoundedRectDottedBorderOptions(
-                          radius: Radius.circular(10),
-                          color: Pallets.grey60,
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.upload_file, color: Pallets.grey60),
-
-                              10.horizontalSpace,
-                              TextView(
-                                text: "Click to upload image",
-                                color: Pallets.grey60,
-                              ),
-                            ],
+                onTap: () {
+                  _pickMultipleImages();
+                },
+                child: SizedBox(
+                  width: 1.sw,
+                  height: 80,
+                  child: DottedBorder(
+                    options: RoundedRectDottedBorderOptions(
+                      radius: Radius.circular(10),
+                      color: Pallets.grey60,
+                    ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload_file, color: Pallets.grey60),
+                          10.horizontalSpace,
+                          TextView(
+                            text: "Click to upload image",
+                            color: Pallets.grey60,
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
+                ),
+              ),
 
               15.verticalSpace,
               BlocConsumer<CookBloc, CookState>(
                 bloc: addcook,
-  listener: _listentToAddCookState,
-  builder: (context, state) {
-    return CustomButton(
-                child: TextView(
-                  text: "Proceed",
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-                onPressed: () {
-                 registerCook();
+                listener: _listentToAddCookState,
+                builder: (context, state) {
+                  return CustomButton(
+                    child: _isUploading
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        TextView(
+                          text: "Uploading Images...",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    )
+                        : TextView(
+                      text: "Proceed",
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    onPressed: _isUploading ? null : () => registerCook(),
+                  );
                 },
-              );
-  },
-),
+              ),
               15.verticalSpace,
             ],
           ),
@@ -523,6 +575,7 @@ class _Onboarding2State extends State<Onboarding2> {
       if (pickedFiles != null && pickedFiles.isNotEmpty) {
         setState(() {
           myfile = pickedFiles;
+          _galleryImageUrls = []; // Reset gallery URLs when new images are selected
         });
       } else {
         CustomDialogs.showToast("No images selected");
@@ -537,23 +590,140 @@ class _Onboarding2State extends State<Onboarding2> {
   }
 
   Future<void> _pickProfileImage() async {
-    var profileimage=await picker.pickImage(source: ImageSource.gallery);
-    if(profileimage==null)return;
+    var profileimage = await picker.pickImage(source: ImageSource.gallery);
+    if (profileimage == null) return;
     setState(() {
-      profilefile=profileimage;
+      profilefile = profileimage;
+      _profileImageUrl = null; // Reset URL when new image is selected
     });
-
-
   }
+
   Future<void> _pickCoverImage() async {
-    var coverimage=await picker.pickImage(source: ImageSource.gallery);
-    if(coverimage==null)return;
+    var coverimage = await picker.pickImage(source: ImageSource.gallery);
+    if (coverimage == null) return;
     setState(() {
-      file=coverimage;
+      file = coverimage;
+      _coverImageUrl = null; // Reset URL when new image is selected
     });
   }
 
-  void registerCook() {
+  Future<String?> _uploadImage(String imagePath) async {
+    final cloudinaryUrl = "https://api.cloudinary.com/v1_1/dvt9bcjul/upload";
+    final uploadPreset = "cookApp";
+
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        imagePath,
+        filename: "image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+      ),
+      "upload_preset": uploadPreset,
+    });
+
+    try {
+      Dio dio = Dio();
+      Response response = await dio.post(cloudinaryUrl, data: formData);
+
+      if (response.statusCode == 200) {
+        String uploadedImageUrl = response.data["secure_url"];
+        print("Image Uploaded Successfully: $uploadedImageUrl");
+        return uploadedImageUrl;
+      } else {
+        print("Failed to upload image. Status: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print("Error uploading image: $e");
+      return null;
+    }
+  }
+
+  Future<void> _uploadAllImages() async {
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      // Upload profile image
+      if (profilefile != null && _profileImageUrl == null) {
+        _profileImageUrl = await _uploadImage(profilefile!.path);
+      }
+
+      // Upload cover image
+      if (file != null && _coverImageUrl == null) {
+        _coverImageUrl = await _uploadImage(file!.path);
+      }
+
+      // Upload gallery images
+      if (myfile != null && myfile!.isNotEmpty) {
+        _galleryImageUrls = [];
+        for (var galleryFile in myfile!) {
+          final url = await _uploadImage(galleryFile.path);
+          if (url != null) {
+            _galleryImageUrls.add(url);
+          }
+        }
+      }
+
+      setState(() {
+        _isUploading = false;
+      });
+
+      // Check if all required images are uploaded
+      if (profilefile != null && _profileImageUrl == null) {
+        CustomDialogs.showToast("Failed to upload profile image", isError: true);
+        return;
+      }
+
+      if (file != null && _coverImageUrl == null) {
+        CustomDialogs.showToast("Failed to upload cover image", isError: true);
+        return;
+      }
+
+      if (myfile != null && myfile!.isNotEmpty && _galleryImageUrls.isEmpty) {
+        CustomDialogs.showToast("Failed to upload gallery images", isError: true);
+        return;
+      }
+
+    } catch (e) {
+      setState(() {
+        _isUploading = false;
+      });
+      CustomDialogs.showToast("Error uploading images: $e", isError: true);
+    }
+  }
+
+  void registerCook() async {
+    // First validate required fields
+    if (selectedreligion == null) {
+      CustomDialogs.showToast("Please select your religion", isError: true);
+      return;
+    }
+
+    if (profilefile == null) {
+      CustomDialogs.showToast("Please upload profile image", isError: true);
+      return;
+    }
+
+    if (file == null) {
+      CustomDialogs.showToast("Please upload cover image", isError: true);
+      return;
+    }
+
+    if (myfile == null || myfile!.isEmpty) {
+      CustomDialogs.showToast("Please upload gallery images", isError: true);
+      return;
+    }
+
+    // Upload all images first
+    await _uploadAllImages();
+
+    // Check if all images were uploaded successfully
+    if (_profileImageUrl == null || _coverImageUrl == null || _galleryImageUrls.isEmpty) {
+      CustomDialogs.showToast("Please wait for all images to upload", isError: true);
+      return;
+    }
+
+    // Now register the cook with Cloudinary URLs
     addcook.add(AddCookEvent(
       AppCookPayload(
         cookId: user!.userID.toString(),
@@ -569,28 +739,27 @@ class _Onboarding2State extends State<Onboarding2> {
         cookUsername: user!.username,
         cookReligion: selectedreligion!,
         cookPhone: user!.phone,
-        cookProfileImage: profilefile!.path,
-        cookCoverImage: file!.path,
+        cookProfileImage: _profileImageUrl!, // Use Cloudinary URL
+        cookCoverImage: _coverImageUrl!, // Use Cloudinary URL
         cookHouseAddress: user!.houseAddress,
-        cookGallery: myfile?.map((img) => img.path).toList() ?? [],
+        cookGallery: _galleryImageUrls, // Use Cloudinary URLs
         cookServices: services,
         cookSpecialMeals: cookSpecialMeals,
       ),
     ));
   }
 
-
   void _listentToAddCookState(BuildContext context, CookState state) {
-    if(state is CookLoadingSate){
+    if (state is CookLoadingSate) {
       CustomDialogs.showLoading(context);
     }
-    if(state is CookFailuireSate){
+    if (state is CookFailuireSate) {
       Navigator.pop(context);
-      CustomDialogs.showToast(state.error,isError: true);
+      CustomDialogs.showToast(state.error, isError: true);
     }
-    if(state is AddCookSccessSate){
+    if (state is AddCookSccessSate) {
       Navigator.pop(context);
-      Navigator.push(context, CupertinoPageRoute(builder: (ctx)=>BasePage()));
+      Navigator.push(context, CupertinoPageRoute(builder: (ctx) => BasePage()));
     }
   }
 }

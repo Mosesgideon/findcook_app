@@ -235,7 +235,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           phone: numberController.text.trim(),
                           houseAddress: addressController.text.trim(),
                           password: passwordController.text.trim(),
-                          role:selectedIdentity!
+                          role:selectedIdentity!,
+                          profileImage: 'https://res.cloudinary.com/dvt9bcjul/image/upload/v1761717948/pngtree-user-profile-avatar-png-image_10211467_r6ijom.png'
                       ),
                     ),
                   );

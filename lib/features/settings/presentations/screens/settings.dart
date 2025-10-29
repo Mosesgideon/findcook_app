@@ -1,5 +1,7 @@
 import 'package:find_cook/common/widgets/custom_button.dart';
 import 'package:find_cook/features/feeds/presentations/screens/app_feeds.dart';
+import 'package:find_cook/features/settings/presentations/screens/profille.dart';
+import 'package:find_cook/features/settings/presentations/screens/transactions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,11 +46,11 @@ class _AppSettinggsState extends State<AppSettinggs> {
             child: Row(
            crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ImageWidget(
-                  imageUrl: "assets/png/cook.jpg",
-                  width: 50,
-                  height: 50,
-                  borderRadius: BorderRadius.circular(255),
+             ImageWidget(
+                  imageUrl: user?.profileImage??'',
+                  width: 60,
+                  height: 60,
+                  borderRadius: BorderRadius.circular(30),
                   border: Border.all(
                     color: Color(0xfffaab65),
                     width: 2,
@@ -75,9 +77,15 @@ class _AppSettinggsState extends State<AppSettinggs> {
           children: [
             Divider(),
             20.verticalSpace,
-            SettingsItem(widget: Icon(Iconsax.user,size: 20,), title: 'View Profile', ontap: () {  },),
+            SettingsItem(widget: Icon(Iconsax.user,size: 20,), title: 'View Profile', ontap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (ct)=>ProfileScreen()));
+            },),
             SettingsItem(widget: Icon(Iconsax.setting_2,size: 20,), title: 'Settings', ontap: () {  },),
-            SettingsItem(widget: Icon(Icons.history,size: 20,), title: 'Subscriptions/Transactions', ontap: () {  },),
+            SettingsItem(widget: Icon(Icons.history,size: 20,), title: 'Subscriptions/Transactions', ontap: () {
+              Navigator.push(context, CupertinoPageRoute(builder: (ct)=>TransactionsScreen()));
+
+            },),
+
             Divider(),
             SettingsItem(widget: Icon(Icons.telegram_outlined,size: 20,), title: 'Invite Member', ontap: () {  },),
             SettingsItem(widget: Icon(Icons.headphones_outlined,size: 20,), title: 'Support', ontap: () {  },),

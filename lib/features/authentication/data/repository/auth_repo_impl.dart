@@ -103,6 +103,7 @@ class AuthRepositoryImpl extends AuthRepository {
           'phone': payload.phone,
           'houseAddress': payload.houseAddress,
           'role': payload.role,
+          'profileImage': payload.profileImage,
           'createdAt': FieldValue.serverTimestamp(),
         };
 
@@ -138,6 +139,42 @@ class AuthRepositoryImpl extends AuthRepository {
     // TODO: implement resetpassword
     throw UnimplementedError();
   }
+
+  @override
+  Future<AuthSuccessResponse> updateProfile(AuthPayload payload) async {
+    try {
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser == null) {
+        throw AuthException('No authenticated user found.');
+      }
+
+      final userUid = currentUser.uid;
+      final users = FirebaseFirestore.instance.collection('Users');
+
+      final userData = {
+        'fullname': payload.fullname,
+        'username': payload.username,
+        'phone': payload.phone,
+        'houseAddress': payload.houseAddress,
+        'profileImage': payload.profileImage,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await users.doc(userUid).set(userData, SetOptions(merge: true));
+
+      // Get updated user data from Firestore
+      final snapshot = await users.doc(userUid).get();
+      final updatedUser = AuthSuccessResponse.fromJson(snapshot.data()!);
+
+      // Save updated data locally
+      await SharedPreferencesClass.setUserData(updatedUser);
+
+      return updatedUser;
+    } catch (e) {
+      throw AuthException('Profile update failed: $e');
+    }
+  }
+
 }
 
 

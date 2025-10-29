@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../../core/services/share_prefs/shared_prefs_save.dart';
 import '../../../authentication/data/models/AuthSuccessResponse.dart';
@@ -32,14 +33,40 @@ class PreviewScreen extends StatefulWidget {
 
 class _PreviewScreenState extends State<PreviewScreen> {
 
-  final shared = SharedPreferencesClass();
-  AuthSuccessResponse? user;
+
+
+
+  late VideoPlayerController _controller;
+  bool _isVideoInitialized = false;
+  final TextEditingController _writeUpController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _loadUser();
+
+    if (widget.video != null && widget.video!.isNotEmpty) {
+      _controller = VideoPlayerController.network(widget.video!)
+        ..initialize().then((_) {
+          setState(() {
+            _isVideoInitialized = true;
+          });
+        });
+    }
   }
+
+  @override
+  void dispose() {
+    if (_isVideoInitialized) {
+      _controller.dispose();
+    }
+    _writeUpController.dispose();
+    super.dispose();
+  }
+
+  final shared = SharedPreferencesClass();
+  AuthSuccessResponse? user;
+
 
   Future<void> _loadUser() async {
     final data = await SharedPreferencesClass.getUserData();
@@ -50,7 +77,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
   String? uploadedLink;
   bool _isUploading=false;
-  final _writeUpController=TextEditingController();
   final postbloc=FeedsBloc(FeedsRepositoryImpl());
   @override
   Widget build(BuildContext context) {
@@ -63,8 +89,28 @@ class _PreviewScreenState extends State<PreviewScreen> {
             Expanded(
               child: Column(
                 children: [
-              ImageWidget(imageUrl: widget.image,height: 200,width: 1.sw,borderRadius: BorderRadius.circular(10
-              ),),
+                  widget.image != null
+                      ? ImageWidget(
+                    imageUrl: widget.image!,
+                    height: 200,
+                    width: 1.sw,
+                    borderRadius: BorderRadius.circular(10),
+                  )
+                      : Container(
+                    height: 400,
+                    width: 1.sw,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: widget.video != null && widget.video!.isNotEmpty
+                        ? _isVideoInitialized
+                        ? AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    )
+                        : const Center(child: CircularProgressIndicator())
+                        : const Center(child: Text('No video found')),
+                  ),
               20.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),

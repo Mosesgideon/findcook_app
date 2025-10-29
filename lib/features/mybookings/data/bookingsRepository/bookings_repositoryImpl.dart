@@ -47,6 +47,8 @@ import 'package:firebase_auth/firebase_auth.dart';
         "notes": payload.notes,
         "status": payload.status,
         "eventstatus": payload.eventstatus,
+        "feeRef": payload.feeRef,
+        "consultationFee": payload.consultationFee,
       };
 
       // await bookingsCollection.add(bookingData);

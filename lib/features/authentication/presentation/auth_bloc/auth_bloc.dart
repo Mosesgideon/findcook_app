@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<LoginEvent>(_mapLoginEventToState);
     on<RegisterEvent>(_mapRegisterEventToState);
+    on<UpdateEvent>(_mapUpdateEventToState);
   }
 
   Future<void> _mapLoginEventToState(
@@ -42,6 +43,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthloadingState());
     try {
       var response = await repository.register(event.payload);
+      emit(AuthSuccessState(response));
+    } catch (e) {
+      emit(AuthfailuireState(e.toString()));
+      rethrow;
+    }
+  }
+
+  Future<void> _mapUpdateEventToState(UpdateEvent event, Emitter<AuthState> emit) async {
+
+    emit(AuthloadingState());
+    try {
+      var response = await repository.updateProfile(event.payload);
       emit(AuthSuccessState(response));
     } catch (e) {
       emit(AuthfailuireState(e.toString()));

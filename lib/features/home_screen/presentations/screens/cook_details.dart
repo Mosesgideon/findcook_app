@@ -106,54 +106,51 @@ class _CookDetailsState extends State<CookDetails> {
                               border: Border.all(color: Color(0xfffaab65)),
                             ),
                             10.verticalSpace,
-                            Positioned(
-                              bottom: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 1,
+                                      spreadRadius: 1,
+                                      offset: Offset(1, 1),
+                                    ),
+                                  ],
                                 ),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 1,
-                                        spreadRadius: 1,
-                                        offset: Offset(1, 1),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      TextView(
-                                        text: widget.cookName,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      TextView(
-                                        text:
-                                            widget.response.first.cookLocation,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 12,
-                                      ),
-                                      Divider(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextView(text: "Verified"),
-                                          4.horizontalSpace,
-                                          Icon(
-                                            Icons.verified_user_rounded,
-                                            color: Colors.green,
-                                            size: 18,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                child: Column(
+                                  children: [
+                                    TextView(
+                                      text: widget.cookName,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    TextView(
+                                      text:
+                                      widget.response.first.cookLocation,
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12,
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        TextView(text: "Verified"),
+                                        4.horizontalSpace,
+                                        Icon(
+                                          Icons.verified_user_rounded,
+                                          color: Colors.green,
+                                          size: 18,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

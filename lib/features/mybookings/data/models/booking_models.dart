@@ -31,6 +31,8 @@ class AppBookingModelPayload {
     required this.notes,
     required this.status,
     required this.eventstatus,
+    required this.consultationFee,
+    required this.feeRef,
   });
 
   final String? docID;
@@ -64,6 +66,8 @@ class AppBookingModelPayload {
   final String notes;
   final String status;
   final String eventstatus;
+  final String consultationFee;
+  final String feeRef;
 
   AppBookingModelPayload copyWith({
     String? docID,
@@ -97,8 +101,12 @@ class AppBookingModelPayload {
     String? notes,
     String? status,
     String? eventstatus,
+    String? consultationFee,
+    String? feeRef,
   }) {
     return AppBookingModelPayload(
+      consultationFee: consultationFee ?? this.consultationFee,
+      feeRef: feeRef ?? this.feeRef,
       docID: docID ?? this.docID,
       cookId: cookId ?? this.cookId,
       clientId: clientId ?? this.clientId,
@@ -135,6 +143,9 @@ class AppBookingModelPayload {
 
   factory AppBookingModelPayload.fromJson(Map<String, dynamic> json){
     return AppBookingModelPayload(
+
+      feeRef: json["feeRef"],
+      consultationFee: json["consultationFee"],
       docID: json["docID"],
       cookId: json["cookID"],
       clientId: json["clientID"],
@@ -170,6 +181,9 @@ class AppBookingModelPayload {
   }
 
   Map<String, dynamic> toJson() => {
+
+    "feeRef": feeRef,
+    "consultationFee": consultationFee,
     "docID": docID,
     "cookID": cookId,
     "clientID": clientId,
@@ -205,6 +219,6 @@ class AppBookingModelPayload {
 
   @override
   String toString(){
-    return ",$docID,$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals,$notes ,$status ,$eventstatus";
+    return ",$docID,$cookId, $clientId, $cookName, $clientName, $cookEmail, $clientEmail, $cookAbout, $cookLocation, $clientLocation, $yearsOfExperience, $cookType, $cookChargePerHr, $cookmarriageStatus, $clientmarriageStatus, $cookLanguages, $cookUsername, $cookReligion, $cookPhone, $clientPhone, $cookProfileImage, $clientProfileImage, $cookCoverImage, $cookHouseAddress, $clientHouseAddress, $cookGallery, $clientSelectedServices, $clientSelectedSpecialMeals,$notes ,$status ,$eventstatus ,$feeRef,$consultationFee";
   }
 }

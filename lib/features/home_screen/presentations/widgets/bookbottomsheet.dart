@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:find_cook/common/widgets/custom_button.dart';
 import 'package:find_cook/common/widgets/custom_dialogs.dart';
 import 'package:find_cook/common/widgets/outlined_form_field.dart';
@@ -10,7 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:http/http.dart' as http;
+import 'package:pay_with_paystack/pay_with_paystack.dart';
+import 'package:paystack_payment/paystack_payment.dart';
 
+import '../../../../core/services/payment/payment_response.dart';
 import '../../../../core/services/share_prefs/shared_prefs_save.dart';
 import '../../../authentication/data/models/AuthSuccessResponse.dart';
 
@@ -56,6 +62,8 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
   final shared = SharedPreferencesClass();
   AuthSuccessResponse? user;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +76,10 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
       user = data;
     });
   }
+
+  String publicKey = 'pk_live_904e3ee7d27b6b8f7bfb49eb628e6100237acc9b';
+  String message = '';
+  String ref = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -234,7 +246,9 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
                       fontWeight: FontWeight.w700,
                     ),
                     onPressed: () {
-                      bookService();
+                      if (key.currentState!.validate()) {
+                        makePaymentWithPayWithPaystack();
+                      }
                     },
                   );
                 },
@@ -243,6 +257,37 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
           ],
         ),
       ),
+    );
+  }
+
+
+
+  void makePaymentWithPayWithPaystack() async {
+
+    String reference = PayWithPayStack().generateUuidV4();
+
+    PayWithPayStack().now(
+        context: context,
+        secretKey: 'sk_test_f285f4ba4166595e66823721a55e8b1ba2d9e71d',
+        customerEmail: user?.email??'',
+        reference: reference,
+        currency: "NGN",
+        amount: 15000,
+        callbackUrl: "https://your.callback.url",
+        transactionCompleted: (paymentData) {
+          // Payment succeeded
+          message = 'Payment successful. Ref: ${paymentData.reference}';
+          ref=paymentData.reference!;
+          bookService();
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (_) => PaymentSuccess(message: message))
+          // );
+        },
+        transactionNotCompleted: (reason) {
+          message = 'Payment failed: $reason';
+          CustomDialogs.showToast(message, isError: true);
+        }
     );
   }
 
@@ -284,7 +329,7 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
           cookGallery: widget.cookGallery,
           clientSelectedServices: selectedServiceNames,
           clientSelectedSpecialMeals: selectedMealNames, notes: proposalController.text.trim(),
-          status: "pending", eventstatus: 'pending'
+          status: "pending", eventstatus: 'pending', consultationFee: '15000', feeRef: ref
       )));
     }
   }

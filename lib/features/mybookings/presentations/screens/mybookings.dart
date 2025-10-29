@@ -65,7 +65,16 @@ class _MybookingsState extends State<Mybookings> {
                     TextView(text: user?.location.placeName ?? ''),
                   ],
                 ),
-                CircleAvatar(child: Icon(Iconsax.user)),
+                ImageWidget(
+                  imageUrl: user?.profileImage??'',
+                  width: 60,
+                  height: 60,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Color(0xfffaab65),
+                    width: 2,
+                  ),
+                ),
               ],
             ),
           ),

@@ -16,3 +16,10 @@ class RegisterEvent extends AuthEvent {
   // TODO: implement props
   List<Object?> get props => [payload];
 }
+class UpdateEvent extends AuthEvent {
+ AuthPayload payload;
+ UpdateEvent(this.payload);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [payload];
+}
