@@ -240,6 +240,7 @@ class _FeedvideoState extends State<Feedvideo> {
                           ),
                           10.verticalSpace,
                           SeeMoreWidget(
+
                             feed.writeUp ?? '',
                             textStyle: TextStyle(
                               fontSize: 10,
@@ -400,7 +401,7 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
     if (!isInitialized) {
       return Container(
         width: 1.sw,
-        height: 200,
+        height: 400,
         decoration: BoxDecoration(
           color: Colors.black12,
           borderRadius: BorderRadius.circular(10),
@@ -413,16 +414,14 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
     }
 
     return Container(
+      padding: EdgeInsets.only(top: 10,bottom: 10),
       width: 1.sw,
-      height: 200,
+      height: 500,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: const Color(0xfffaab65), width: 1),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Chewie(controller: _chewieController!),
-      ),
+      child: Chewie(controller: _chewieController!,),
     );
   }
 

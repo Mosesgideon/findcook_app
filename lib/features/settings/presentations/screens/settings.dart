@@ -1,7 +1,9 @@
 import 'package:find_cook/common/widgets/custom_button.dart';
+import 'package:find_cook/features/authentication/presentation/screens/signin.dart';
 import 'package:find_cook/features/feeds/presentations/screens/app_feeds.dart';
 import 'package:find_cook/features/settings/presentations/screens/profille.dart';
 import 'package:find_cook/features/settings/presentations/screens/transactions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +29,6 @@ class _AppSettinggsState extends State<AppSettinggs> {
     super.initState();
     _loadUser();
   }
-
   Future<void> _loadUser() async {
     final data = await SharedPreferencesClass.getUserData();
     setState(() {
@@ -94,7 +95,9 @@ class _AppSettinggsState extends State<AppSettinggs> {
             },),
             Divider(),
             20.verticalSpace,
-            SettingsItem(widget: Icon(Icons.logout_outlined,size: 20,), title: 'Logout', ontap: () {  },),
+            SettingsItem(widget: Icon(Icons.logout_outlined,size: 20,), title: 'Logout', ontap: () async {
+            Navigator.pushReplacement(context, CupertinoPageRoute(builder: (cta)=>SigninScreen()));
+            },),
 
 30.verticalSpace,
             CustomButton(

@@ -2,6 +2,7 @@ import 'package:find_cook/common/widgets/custom_dialogs.dart';
 import 'package:find_cook/common/widgets/error_widget.dart';
 import 'package:find_cook/common/widgets/image_widget.dart';
 import 'package:find_cook/core/services/share_prefs/shared_prefs_save.dart';
+import 'package:find_cook/core/theme/pallets.dart';
 import 'package:find_cook/features/ai/ask_ai.dart';
 import 'package:find_cook/features/home_screen/data/data/repository_impl.dart';
 import 'package:find_cook/features/home_screen/presentations/bloc/cook_bloc.dart';
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  final List<String>items=["Total Bookings","Total Accepted","Total Completed","Total Pending","Total Cancelled"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,12 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: SingleChildScrollView(
         child: Column(
-
           children: [
             20.verticalSpace,
-            Padding(
+            user?.role=="Cook/Chef"?TextView(text: "My Dashboard",fontSize: 15,fontWeight: FontWeight.w600,):   Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
               child: Container(
+
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -160,7 +162,130 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            BlocConsumer<CookBloc, CookState>(
+            user?.role=="Cook/Chef"?
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: Column(
+                   children: [
+                     Container(
+
+                       padding: EdgeInsets.all(15),
+                       decoration: BoxDecoration(
+                         color: Pallets.grey95,
+                       borderRadius: BorderRadius.circular(15),
+                     ),
+                       child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           TextView(text: "My booking rate"),
+                           15.verticalSpace,
+                           TextView(text: "70% success rate"),
+                           8.verticalSpace,
+                           LinearProgressIndicator(
+                             value: 1,
+                             backgroundColor: Color(0xFFE5E5E5),
+                             valueColor: AlwaysStoppedAnimation(Color(0xFF34C759)),
+                             minHeight: 8,
+                             borderRadius: BorderRadius.circular(10),
+
+                           )
+                         ],
+                       ),
+                     ),
+                     30.verticalSpace,
+                     Container(
+                       width: 1.sw,
+
+                       padding: EdgeInsets.all(15),
+                       decoration: BoxDecoration(
+                           color: Pallets.grey95,
+
+                           borderRadius: BorderRadius.circular(10)),
+                       child: Column(
+                         children: [
+                           TextView(text:"Total Bookings/Booking Request" ,fontSize: 15,fontWeight: FontWeight.w600
+                             ,),
+                           TextView(text: "34",fontSize: 18,fontWeight: FontWeight.w500,),
+                         ],
+                       ),
+                     ),
+
+                     20.verticalSpace,
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children:[
+                           Container(
+                             width: 150,
+
+                             padding: EdgeInsets.all(15),
+                             decoration: BoxDecoration(
+                                 color: Pallets.grey95,
+                                 borderRadius: BorderRadius.circular(10)),
+                             child: Column(
+                               children: [
+                                 TextView(text:"Total Accepted" ,fontSize: 15,fontWeight: FontWeight.w600
+                                   ,),
+                                 TextView(text: "34",fontSize: 18,fontWeight: FontWeight.w500,),
+                               ],
+                             ),
+                           ),
+                           Container(
+                             width: 150,
+
+                             padding: EdgeInsets.all(15),
+                             decoration: BoxDecoration(
+                                 color: Pallets.grey95,
+                                 borderRadius: BorderRadius.circular(10)),
+                             child: Column(
+                               children: [
+                                 TextView(text: "Total Completed",fontSize: 15,fontWeight: FontWeight.w600
+                                   ,),
+                                 TextView(text: "34",fontSize: 18,fontWeight: FontWeight.w500,),
+                               ],
+                             ),
+                           ),
+                         ]),
+                     20.verticalSpace,
+                     Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children:[
+                           Container(
+                             width: 150,
+
+                             padding: EdgeInsets.all(15),
+                             decoration: BoxDecoration(
+                                 color: Pallets.grey95,
+                                 borderRadius: BorderRadius.circular(10)),
+                             child: Column(
+                               children: [
+                                 TextView(text:"Total Pending" ,fontSize: 15,fontWeight: FontWeight.w600
+                                   ,),
+                                 TextView(text: "34",fontSize: 18,fontWeight: FontWeight.w500,),
+                               ],
+                             ),
+                           ),
+                           Container(
+                             width: 150,
+
+                             padding: EdgeInsets.all(15),
+                             decoration: BoxDecoration(
+                                 color: Pallets.grey95,
+                                 borderRadius: BorderRadius.circular(10)),
+                             child: Column(
+                               children: [
+                                 TextView(text: "Total Cancelled",fontSize: 15,fontWeight: FontWeight.w600
+                                   ,),
+                                 TextView(text: "34",fontSize: 18,fontWeight: FontWeight.w500,),
+                               ],
+                             ),
+                           ),
+                         ]),
+                     10.verticalSpace,
+
+                   ],
+                 ),
+               )
+            : BlocConsumer<CookBloc, CookState>(
               bloc: coobloc,
               listener: _listenToetCookState,
               builder: (context, state) {
