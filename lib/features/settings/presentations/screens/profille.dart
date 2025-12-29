@@ -206,7 +206,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           houseAddress: hhouseAddresscontroller.text.trim(),
           password: user?.password ?? '',
           role: user?.role ?? '',
-          profileImage: uploadedImageUrl!,
+          profileImage: uploadedImageUrl?.isNotEmpty == true
+              ? uploadedImageUrl!
+              : user?.profileImage ?? '',
         ),
       ),
     );

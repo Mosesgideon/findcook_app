@@ -416,7 +416,7 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
     return Container(
       padding: EdgeInsets.only(top: 10,bottom: 10),
       width: 1.sw,
-      height: 500,
+      height: 600,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: const Color(0xfffaab65), width: 1),
