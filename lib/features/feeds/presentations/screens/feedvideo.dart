@@ -9,6 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:see_more/see_more_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../../common/widgets/custom_dialogs.dart';
 import '../../../../common/widgets/image_widget.dart';
@@ -59,7 +60,7 @@ class _FeedvideoState extends State<Feedvideo> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(0.0),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 80),
           child: BlocConsumer<FeedsBloc, FeedsState>(
@@ -385,14 +386,17 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
   }
 
   Future<void> _initializeVideo() async {
-    _videoController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    _videoController =
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
     await _videoController.initialize();
+
     _chewieController = ChewieController(
       videoPlayerController: _videoController,
       autoPlay: false,
       looping: false,
       aspectRatio: _videoController.value.aspectRatio,
     );
+
     setState(() => isInitialized = true);
   }
 
@@ -400,29 +404,38 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
   Widget build(BuildContext context) {
     if (!isInitialized) {
       return Container(
-        width: 1.sw,
         height: 400,
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xfffaab65), width: 1),
-        ),
-        child: const Center(
-          child: CircularProgressIndicator(color: Color(0xfffaab65)),
-        ),
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
 
-    return Container(
-      padding: EdgeInsets.only(top: 10,bottom: 10),
-      width: 1.sw,
-      height: 600,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xfffaab65), width: 1),
+    return VisibilityDetector(
+      key: Key(widget.videoUrl),
+      onVisibilityChanged: (visibilityInfo) {
+        final visiblePercentage =
+            visibilityInfo.visibleFraction * 100;
+
+        if (visiblePercentage < 50) {
+          // 👈 Pause when user scrolls past
+          if (_videoController.value.isPlaying) {
+            _videoController.pause();
+          }
+        }
+      },
+      child: Container(
+        height: 600,
+        child: Chewie(controller: _chewieController!),
       ),
-      child: Chewie(controller: _chewieController!,),
     );
+  }
+
+  /// 👇 Called when user navigates away (back, tab switch, etc.)
+  @override
+  void deactivate() {
+    if (_videoController.value.isPlaying) {
+      _videoController.pause();
+    }
+    super.deactivate();
   }
 
   @override
@@ -432,7 +445,6 @@ class _FeedVideoPlayerState extends State<_FeedVideoPlayer> {
     super.dispose();
   }
 }
-
 
 class VideoCommentBottomSheet extends StatefulWidget {
 

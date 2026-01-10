@@ -71,7 +71,7 @@ class CustomDialogs {
       elevation: 0,
       // child: PulsatingImage(),
 
-      child:  SpinKitCubeGrid(
+      child:  SpinKitCircle(
         color:Color(0xffE67002).withOpacity(0.6),
         size: 50.0,
       ),

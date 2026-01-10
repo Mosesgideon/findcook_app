@@ -76,6 +76,7 @@ dependencies:
   http: ^1.5.0
   paystack_payment: ^1.0.0
   pay_with_paystack: ^1.0.14
+  visibility_detector: ^0.4.0+2
 
 
 dev_dependencies:

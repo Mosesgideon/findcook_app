@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         designSize: const Size(375, 812),
       child: MaterialApp(
         title: 'Flutter Demo',
-
         home:  StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
