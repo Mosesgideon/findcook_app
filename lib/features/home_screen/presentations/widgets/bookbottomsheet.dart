@@ -77,7 +77,7 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
     });
   }
 
-  String publicKey = 'pk_live_904e3ee7d27b6b8f7bfb49eb628e6100237acc9b';
+  String publicKey = '';
   String message = '';
   String ref = '';
   @override
@@ -264,25 +264,7 @@ class _BookbottomsheetState extends State<Bookbottomsheet> {
 
   void makePaymentWithPayWithPaystack() async {
 
-    String reference = PayWithPayStack().generateUuidV4();
-
-    PayWithPayStack().now(
-        context: context,
-        secretKey: 'sk_test_f285f4ba4166595e66823721a55e8b1ba2d9e71d',
-        customerEmail: user?.email??'',
-        reference: reference,
-        currency: "NGN",
-        amount: 15000,
-        callbackUrl: "https://your.callback.url",
-        transactionCompleted: (paymentData) {
-          // Payment succeeded
-          message = 'Payment successful. Ref: ${paymentData.reference}';
-          ref=paymentData.reference!;
-          bookService();
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (_) => PaymentSuccess(message: message))
-          // );
+   
         },
         transactionNotCompleted: (reason) {
           message = 'Payment failed: $reason';
